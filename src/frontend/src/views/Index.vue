@@ -30,16 +30,17 @@
 
               <div class="sheet__content dough">
                 <label
-                  class="dough__input dough__input--light"
                   v-for="(dough, index) in pizza.dough"
-                  :key="index"
+                  :key="dough.name"
+                  class="dough__input"
+                  :class="`dough__input--${dough.value}`"
                 >
                   <input
                     type="radio"
                     name="dought"
                     :value="dough.value"
                     class="visually-hidden"
-                    checked
+                    :checked="index === 0"
                   />
                   <b>{{ dough.name }}</b>
                   <span>{{ dough.description }}</span>
@@ -55,7 +56,7 @@
               <div class="sheet__content diameter">
                 <label
                   class="diameter__input"
-                  v-for="size in pizza.sizes"
+                  v-for="(size, index) in pizza.sizes"
                   :key="size.value"
                   :class="`diameter__input--${size.value}`"
                 >
@@ -64,6 +65,7 @@
                     name="diameter"
                     :value="size.value"
                     class="visually-hidden"
+                    :checked="index === 1"
                   />
                   <span>{{ size.name }}</span>
                 </label>
@@ -84,13 +86,13 @@
                   <label
                     class="radio ingridients__input"
                     v-for="(sauce, index) in pizza.sauces"
-                    :key="index"
+                    :key="sauce.name"
                   >
                     <input
                       type="radio"
                       name="sauce"
                       :value="sauce.value"
-                      checked
+                      :checked="index === 0"
                     />
                     <span>{{ sauce.name }}</span>
                   </label>
@@ -125,7 +127,7 @@
                         </button>
                         <input
                           type="text"
-                          :name="ingredient.filling"
+                          name="counter"
                           class="counter__input"
                           value="0"
                         />

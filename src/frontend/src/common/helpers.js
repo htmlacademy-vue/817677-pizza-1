@@ -1,6 +1,12 @@
 export const getFileName = (filePath) =>
   filePath.split("/").pop().split(".")[0];
 
+export const reverseObject = (object) =>
+  Object.entries(object).reduce(
+    (acc, [key, value]) => ({ ...acc, [value]: key }),
+    {}
+  );
+
 export const normalizePizza = (pizza) => {
   const { dough, ingredients, sauces, sizes } = pizza;
 
@@ -34,7 +40,7 @@ export const normalizePizza = (pizza) => {
 
     return {
       ...sauce,
-      value: Object.entries(values).find((value) => value[1] === sauce.name)[0],
+      value: reverseObject(values)[sauce.name],
     };
   });
 
