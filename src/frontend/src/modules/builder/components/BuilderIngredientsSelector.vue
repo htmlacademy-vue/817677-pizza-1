@@ -24,18 +24,22 @@
         <ul class="ingridients__list">
           <li
             class="ingridients__item"
-            v-for="{ name, value, price } in ingredients"
+            v-for="{ name, value, count, price } in ingredients"
             :key="value"
           >
-            <SelectorItem :classes="`filling--${value}`">
-              {{ name }}
-            </SelectorItem>
+            <AppDrag :transferData="{ value, count, price }">
+              <SelectorItem :classes="`filling--${value}`">
+                {{ name }}
+              </SelectorItem>
+            </AppDrag>
 
             <ItemCounter
               counter-classes="ingridients__counter"
-              @change-ingredient-count="
+              :counter-value="count"
+              @change-counter-value="
                 $emit('change-ingredient-count', {
-                  [value]: { count: $event, price },
+                  value,
+                  count: $event,
                 })
               "
             />
@@ -46,6 +50,7 @@
   </div>
 </template>
 <script>
+import AppDrag from "@/common/components/AppDrag";
 import SelectorItem from "@/common/components/SelectorItem";
 import ItemCounter from "@/common/components/ItemCounter";
 import RadioButton from "@/common/components/RadioButton";
@@ -53,6 +58,7 @@ import RadioButton from "@/common/components/RadioButton";
 export default {
   name: "BuilderIngredientsSelector",
   components: {
+    AppDrag,
     SelectorItem,
     ItemCounter,
     RadioButton,

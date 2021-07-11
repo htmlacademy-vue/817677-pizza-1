@@ -18,6 +18,7 @@ export const normalizePizza = (pizza) => {
   const normalizeIngredients = ingredients.map((ingredient) => ({
     ...ingredient,
     value: getFileName(ingredient.image),
+    count: 0,
   }));
 
   const normalizeSizes = sizes.map((size) => {

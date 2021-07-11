@@ -11,7 +11,7 @@
       type="text"
       name="counter"
       class="counter__input"
-      :value="counterValue"
+      v-model.number="counterValue"
       @input="handleInputCounterValue"
     />
     <button
@@ -28,29 +28,41 @@ export default {
   name: "ItemCounter",
   props: {
     counterClasses: [Array, String],
+    counterValue: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {
-      counterValue: 0,
+      innerCounterValue: 0,
     };
   },
   watch: {
-    counterValue(newValue) {
-      this.$emit("change-ingredient-count", newValue);
+    innerCounterValue(newValue) {
+      let result = newValue;
+
+      if (result < 0) {
+        result = 0;
+      }
+
+      if (isNaN(result)) {
+        result = 0;
+      }
+
+      this.$emit("change-counter-value", result);
     },
   },
   methods: {
     decrimentCounter() {
-      if (this.counterValue > 0) {
-        this.counterValue -= 1;
-      }
+      this.innerCounterValue = this.counterValue - 1;
     },
     incrementCounter() {
-      this.counterValue += 1;
+      this.innerCounterValue = this.counterValue + 1;
     },
     handleInputCounterValue(e) {
-      this.counterValue = parseInt(e.target.value);
-      this.$emit("change-ingredient-count", this.counterValue);
+      this.innerCounterValue = parseInt(e.target.value);
+      this.$emit("change-counter-value", parseInt(e.target.value));
     },
   },
 };

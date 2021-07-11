@@ -5,16 +5,19 @@
     </span>
     <input
       type="text"
-      :value="value"
-      @input="$emit('input', e.target.value)"
       :name="name"
       :placeholder="placeholder"
+      @input="$emit('input', $event.target.value)"
     />
   </label>
 </template>
 <script>
 export default {
   name: "TextField",
+  model: {
+    prop: "value",
+    event: "input",
+  },
   props: {
     labelText: {
       type: String,
@@ -28,7 +31,10 @@ export default {
       type: String,
       required: true,
     },
-    value: String,
+    value: {
+      type: String,
+      default: "",
+    },
   },
 };
 </script>

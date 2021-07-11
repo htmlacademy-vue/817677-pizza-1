@@ -35,7 +35,7 @@
             label-text="Название пиццы"
             name="pizza_name"
             placeholder="Введите название пиццы"
-            :value="pizza.name"
+            v-model="pizza.name"
             @input="pizza.name = $event"
           />
 
@@ -45,6 +45,7 @@
               :size="pizza.size"
               :sauce="pizza.sauce"
               :ingredients="pizza.ingredients"
+              @change-ingredient-count="addIngredient"
             />
           </div>
 
@@ -83,13 +84,12 @@ export default {
         dough: "light",
         size: "normal",
         sauce: "tomato",
-        ingredients: {},
+        ingredients: [],
       },
     };
   },
   computed: {
     doughPrice() {
-      console.log(this.pizzaData);
       const { price } = this.pizzaData.dough.find(
         (dough) => dough.value === this.pizza.dough
       );
@@ -104,13 +104,13 @@ export default {
       return price;
     },
     ingredientsPrice() {
-      const ingredients = Object.keys(this.pizza.ingredients);
+      const { ingredients } = this.pizza;
 
       if (ingredients.length) {
-        return ingredients.reduce((result, ingredient) => {
-          const { count, price } = this.pizza.ingredients[ingredient];
+        return ingredients.reduce((accamulator, ingredient) => {
+          const { count, price } = ingredient;
 
-          return result + count * price;
+          return accamulator + count * price;
         }, 0);
       }
 
@@ -130,20 +130,28 @@ export default {
       );
     },
   },
+  watch: {
+    "pizzaData.ingredients": {
+      handler(newValue) {
+        this.pizza.ingredients = newValue
+          .map(({ value, count, price }) => ({
+            value,
+            count,
+            price,
+          }))
+          .filter(({ count }) => count > 0);
+      },
+      deep: true,
+    },
+  },
   methods: {
     addIngredient(ingredient) {
-      const [key] = Object.keys(ingredient);
-      const [{ count, price }] = Object.values(ingredient);
+      const { value, count } = ingredient;
+      const findedIngredient = this.pizzaData.ingredients.find(
+        ({ value: findedValue }) => findedValue === value
+      );
 
-      if (count === 0) {
-        this.$delete(this.pizza.ingredients, key);
-        return;
-      }
-
-      this.$set(this.pizza.ingredients, [key], {
-        count,
-        price,
-      });
+      findedIngredient.count = count;
     },
   },
 };

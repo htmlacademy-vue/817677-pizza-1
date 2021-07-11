@@ -1,20 +1,26 @@
 <template>
-  <div
+  <AppDrop
     class="pizza"
     :class="`pizza--foundation--${this.normalizeDoughType}-${this.sauce}`"
+    @drop="addIngredient"
   >
     <div class="pizza__wrapper">
       <div
-        v-for="ingredient in ingredientsNames"
-        :key="ingredient"
-        :class="`pizza__filling pizza__filling--${ingredient}`"
+        v-for="{ value } in ingredients"
+        :key="value"
+        :class="`pizza__filling pizza__filling--${value}`"
       ></div>
     </div>
-  </div>
+  </AppDrop>
 </template>
 <script>
+import AppDrop from "@/common/components/AppDrop";
+
 export default {
   name: "BuilderPizzaView",
+  components: {
+    AppDrop,
+  },
   props: {
     dough: {
       type: String,
@@ -29,14 +35,11 @@ export default {
       required: true,
     },
     ingredients: {
-      type: Object,
-      default: () => {},
+      type: Array,
+      default: () => [],
     },
   },
   computed: {
-    ingredientsNames() {
-      return Object.keys(this.ingredients);
-    },
     normalizeDoughType() {
       const doughType = {
         light: "small",
@@ -44,6 +47,13 @@ export default {
       };
 
       return doughType[this.dough];
+    },
+  },
+  methods: {
+    addIngredient(ingredient) {
+      let { value, count } = ingredient;
+
+      this.$emit("change-ingredient-count", { value, count: count + 1 });
     },
   },
 };
