@@ -10,7 +10,7 @@
       "name": "Толстое",
       "image": "/public/img/dough-large.svg",
       "description": "Из твердых сортов пшеницы",
-      "price": 300
+      "price": 400
     }
   ],
   "ingredients": [
@@ -37,7 +37,7 @@
     },
     {
       "name": "Сливочный",
-      "price": 50
+      "price": 60
     }
   ],
   "sizes": [

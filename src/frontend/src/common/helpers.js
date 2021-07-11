@@ -17,13 +17,13 @@ export const normalizePizza = (pizza) => {
 
   const normalizeIngredients = ingredients.map((ingredient) => ({
     ...ingredient,
-    filling: getFileName(ingredient.image),
+    value: getFileName(ingredient.image),
   }));
 
   const normalizeSizes = sizes.map((size) => {
     const multiplieres = {
       1: "small",
-      2: "noraml",
+      2: "normal",
       3: "big",
     };
     return {
