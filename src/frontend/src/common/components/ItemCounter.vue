@@ -55,8 +55,18 @@ export default {
       this.innerCounterValue = this.counterValue + 1;
     },
     handleInputCounterValue(e) {
-      this.innerCounterValue = parseInt(e.target.value);
-      this.$emit("change-counter-value", parseInt(e.target.value));
+      let result = parseInt(e.target.value);
+
+      if (result < 0 || isNaN(result)) {
+        result = 0;
+      }
+
+      if (result > 3) {
+        result = 3;
+      }
+
+      this.innerCounterValue = result;
+      this.$emit("change-counter-value", result);
     },
   },
 };
