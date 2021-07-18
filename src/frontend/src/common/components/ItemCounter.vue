@@ -50,6 +50,10 @@ export default {
         result = 0;
       }
 
+      if (result > 3) {
+        result = 3;
+      }
+
       this.$emit("change-counter-value", result);
     },
   },

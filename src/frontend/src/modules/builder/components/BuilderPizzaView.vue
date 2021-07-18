@@ -6,9 +6,13 @@
   >
     <div class="pizza__wrapper">
       <div
-        v-for="{ value } in ingredients"
+        v-for="{ value, count } in ingredients"
         :key="value"
-        :class="`pizza__filling pizza__filling--${value}`"
+        class="pizza__filling"
+        :class="[
+          `pizza__filling--${value}`,
+          count > 1 ? `pizza__filling--${countIngredients(count)}` : '',
+        ]"
       ></div>
     </div>
   </AppDrop>
@@ -52,8 +56,21 @@ export default {
   methods: {
     addIngredient(ingredient) {
       let { value, count } = ingredient;
+      const countValue = count === 3 ? 0 : 1;
 
-      this.$emit("change-ingredient-count", { value, count: count + 1 });
+      this.$emit("change-ingredient-count", {
+        value,
+        count: count + countValue,
+      });
+    },
+    countIngredients(count) {
+      const countToString = {
+        1: "",
+        2: "second",
+        3: "third",
+      };
+
+      return countToString[count];
     },
   },
 };
