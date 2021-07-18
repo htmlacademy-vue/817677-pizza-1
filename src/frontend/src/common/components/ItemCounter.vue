@@ -2,7 +2,9 @@
   <div class="counter counter--orange" :class="counterClasses">
     <button
       type="button"
-      class="counter__button counter__button--disabled counter__button--minus"
+      class="counter__button counter__button--minus"
+      :class="{ 'counter__button--disabled': counterValue === 0 }"
+      :disabled="counterValue === 0"
       @click="decrimentCounter"
     >
       <span class="visually-hidden">Меньше</span>
@@ -17,6 +19,8 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
+      :class="{ 'counter__button--disabled': counterValue === 3 }"
+      :disabled="counterValue === 3"
       @click="incrementCounter"
     >
       <span class="visually-hidden">Больше</span>
@@ -40,21 +44,7 @@ export default {
   },
   watch: {
     innerCounterValue(newValue) {
-      let result = newValue;
-
-      if (result < 0) {
-        result = 0;
-      }
-
-      if (isNaN(result)) {
-        result = 0;
-      }
-
-      if (result > 3) {
-        result = 3;
-      }
-
-      this.$emit("change-counter-value", result);
+      this.$emit("change-counter-value", newValue);
     },
   },
   methods: {
