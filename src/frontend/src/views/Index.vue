@@ -49,7 +49,10 @@
             />
           </div>
 
-          <BuilderPriceCounter :disabled="disabledButton" />
+          <BuilderPriceCounter
+            :pizza-price="pizzaPrice"
+            :disabled="disabledButton"
+          />
         </div>
       </div>
     </form>
