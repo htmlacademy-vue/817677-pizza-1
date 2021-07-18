@@ -10,7 +10,7 @@ export default [
     name: "IndexHome",
     component: IndexHome,
     meta: {
-      layout: "AppLayout",
+      layout: "AppLayoutDefault",
     },
   },
   {
@@ -18,7 +18,7 @@ export default [
     name: "Login",
     component: Login,
     meta: {
-      layout: "EmptyLayout",
+      layout: "AppLyaoutEmpty",
     },
   },
   {
@@ -26,7 +26,7 @@ export default [
     name: "Cart",
     component: Cart,
     meta: {
-      layout: "AppLayout",
+      layout: "AppLayoutDefault",
     },
   },
   {
@@ -34,7 +34,7 @@ export default [
     name: "Orders",
     component: Orders,
     meta: {
-      layout: "AppLayout",
+      layout: "AppLayoutDefault",
     },
   },
   {
@@ -42,7 +42,7 @@ export default [
     name: "Profile",
     component: Profile,
     meta: {
-      layout: "AppLayout",
+      layout: "AppLayoutDefault",
     },
   },
 ];

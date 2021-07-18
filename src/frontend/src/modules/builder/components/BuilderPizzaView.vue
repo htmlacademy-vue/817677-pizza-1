@@ -56,11 +56,14 @@ export default {
   methods: {
     addIngredient(ingredient) {
       let { value, count } = ingredient;
-      const countValue = count === 3 ? 0 : 1;
+
+      if (count === 3) {
+        return;
+      }
 
       this.$emit("change-ingredient-count", {
         value,
-        count: count + countValue,
+        count: count + 1,
       });
     },
     countIngredients(count) {

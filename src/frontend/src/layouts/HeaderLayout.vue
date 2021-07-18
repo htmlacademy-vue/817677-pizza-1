@@ -34,13 +34,13 @@
           </picture>
           <span>Василий Ложкин</span>
         </router-link>
-        <router-link :to="{ name: 'Login' }" class="header__logout">
+        <a href="#" @click.prevent="isAuth = false" class="header__logout">
           <span>Выйти</span>
-        </router-link>
+        </a>
       </template>
-      <router-link v-else :to="{ name: 'Login' }" class="header__login">
+      <a v-else href="#" @click.prevent="isAuth = true" class="header__login">
         <span>Войти</span>
-      </router-link>
+      </a>
     </div>
   </header>
 </template>

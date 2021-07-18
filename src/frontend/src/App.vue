@@ -1,33 +1,18 @@
 <template>
   <div id="app">
-    <component :is="layout" />
+    <AppLayout>
+      <router-view />
+    </AppLayout>
   </div>
 </template>
 
 <script>
-import Index from "@/views/Index.vue";
-import Login from "@/views/Login.vue";
-import Cart from "@/views/Cart.vue";
-import Orders from "@/views/Orders.vue";
-import Profile from "@/views/Profile.vue";
+import AppLayout from "@/layouts/AppLayout";
 
 export default {
   name: "App",
   components: {
-    Index,
-    Login,
-    Cart,
-    Orders,
-    Profile,
-  },
-  created() {
-    this.DEFAULT_LAYOUT = "AppLayout";
-  },
-  computed: {
-    layout() {
-      const layout = this.$route.meta.layout || this.DEFAULT_LAYOUT;
-      return () => import(`@/layouts/${layout}.vue`);
-    },
+    AppLayout,
   },
 };
 </script>
