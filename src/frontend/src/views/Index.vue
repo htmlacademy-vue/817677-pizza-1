@@ -49,7 +49,10 @@
             />
           </div>
 
-          <BuilderPriceCounter :pizza-price="pizzaPrice" />
+          <BuilderPriceCounter
+            :pizza-price="pizzaPrice"
+            :disabled="disabledButton"
+          />
         </div>
       </div>
     </form>
@@ -124,10 +127,12 @@ export default {
     },
     pizzaPrice() {
       return (
-        this.doughPrice * this.sizePrice +
-        this.saucesPrice +
-        this.ingredientsPrice
+        (this.doughPrice + this.saucesPrice + this.ingredientsPrice) *
+        this.sizePrice
       );
+    },
+    disabledButton() {
+      return this.ingredientsPrice === 0 || !this.pizza.name;
     },
   },
   watch: {

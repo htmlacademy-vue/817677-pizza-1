@@ -4,8 +4,8 @@
     <button
       type="button"
       class="button"
-      :class="{ 'button--disabled': pizzaPrice === 0 }"
-      :disabled="pizzaPrice === 0"
+      :class="{ 'button--disabled': disabled }"
+      :disabled="disabled"
     >
       Готовьте!
     </button>
@@ -17,6 +17,10 @@ export default {
   props: {
     pizzaPrice: {
       type: Number,
+      required: true,
+    },
+    disabled: {
+      type: Boolean,
       required: true,
     },
   },
