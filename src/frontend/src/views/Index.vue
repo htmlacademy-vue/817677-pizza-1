@@ -6,27 +6,27 @@
 
         <div class="content__dough">
           <BuilderDoughSelector
-            :dough="pizzaData.dough"
+            :dough="builder.dough"
             :dough-type="pizza.dough"
-            @change-dough="pizza.dough = $event"
+            @change-dough="updatePizzaParams({ dough: $event })"
           />
         </div>
 
         <div class="content__diameter">
           <BuilderSizeSelector
-            :sizes="pizzaData.sizes"
+            :sizes="builder.sizes"
             :selected-size="pizza.size"
-            @change-size="pizza.size = $event"
+            @change-size="updatePizzaParams({ size: $event })"
           />
         </div>
 
         <div class="content__ingridients">
           <BuilderIngredientsSelector
-            :sauces="pizzaData.sauces"
-            :ingredients="pizzaData.ingredients"
+            :sauces="builder.sauces"
+            :ingredients="pizza.ingredients"
             :selected-sauce="pizza.sauce"
-            @change-sauce="pizza.sauce = $event"
-            @change-ingredient-count="addIngredient"
+            @change-sauce="updatePizzaParams({ sauce: $event })"
+            @change-ingredient-count="changeIngredientCount"
           />
         </div>
 
@@ -36,7 +36,7 @@
             name="pizza_name"
             placeholder="Введите название пиццы"
             v-model="pizza.name"
-            @input="pizza.name = $event"
+            @input="updatePizzaParams({ name: $event })"
           />
 
           <div class="content__constructor">
@@ -45,7 +45,7 @@
               :size="pizza.size"
               :sauce="pizza.sauce"
               :ingredients="pizza.ingredients"
-              @change-ingredient-count="addIngredient"
+              @change-ingredient-count="changeIngredientCount"
             />
           </div>
 
@@ -66,8 +66,8 @@ import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 import TextField from "@/common/components/TextField";
 
-import pizza from "@/static/pizza.json";
-import { normalizePizza } from "@/common/helpers";
+import { mapState, mapMutations } from "vuex";
+import { UPDATE_PIZZA } from "@/store/mutation-types";
 
 export default {
   name: "Index",
@@ -79,28 +79,17 @@ export default {
     BuilderPriceCounter,
     TextField,
   },
-  data() {
-    return {
-      pizzaData: normalizePizza(pizza),
-      pizza: {
-        name: "",
-        dough: "light",
-        size: "normal",
-        sauce: "tomato",
-        ingredients: [],
-      },
-    };
-  },
   computed: {
+    ...mapState("Builder", ["builder", "pizza"]),
     doughPrice() {
-      const { price } = this.pizzaData.dough.find(
+      const { price } = this.builder.dough.find(
         (dough) => dough.value === this.pizza.dough
       );
 
       return price;
     },
     saucesPrice() {
-      const { price } = this.pizzaData.sauces.find(
+      const { price } = this.builder.sauces.find(
         (sauce) => sauce.value === this.pizza.sauce
       );
 
@@ -110,17 +99,17 @@ export default {
       const { ingredients } = this.pizza;
 
       if (ingredients.length) {
-        return ingredients.reduce((accamulator, ingredient) => {
+        return ingredients.reduce((accumulator, ingredient) => {
           const { count, price } = ingredient;
 
-          return accamulator + count * price;
+          return accumulator + count * price;
         }, 0);
       }
 
       return 0;
     },
     sizePrice() {
-      const { sizes } = this.pizzaData;
+      const { sizes } = this.builder;
       const size = sizes.find((size) => size.value === this.pizza.size);
 
       return size.multiplier;
@@ -135,28 +124,30 @@ export default {
       return this.ingredientsPrice === 0 || !this.pizza.name;
     },
   },
-  watch: {
-    "pizzaData.ingredients": {
-      handler(newValue) {
-        this.pizza.ingredients = newValue
-          .map(({ value, count, price }) => ({
-            value,
-            count,
-            price,
-          }))
-          .filter(({ count }) => count > 0);
-      },
-      deep: true,
-    },
-  },
   methods: {
-    addIngredient(ingredient) {
-      const { value, count } = ingredient;
-      const findedIngredient = this.pizzaData.ingredients.find(
-        ({ value: findedValue }) => findedValue === value
+    ...mapMutations("Builder", [UPDATE_PIZZA]),
+    changeIngredientCount(ingredient) {
+      const ingredients = this.pizza.ingredients.map(
+        ({ value, count, price, name }) => {
+          let innerCount = count;
+
+          if (ingredient.value === value) {
+            innerCount = ingredient.count;
+          }
+
+          return {
+            name,
+            value,
+            count: innerCount,
+            price,
+          };
+        }
       );
 
-      findedIngredient.count = count;
+      this.updatePizzaParams({ ingredients });
+    },
+    updatePizzaParams(params) {
+      this[UPDATE_PIZZA](params);
     },
   },
 };

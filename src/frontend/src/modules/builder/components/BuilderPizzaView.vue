@@ -10,7 +10,7 @@
         :key="value"
         class="pizza__filling"
         :class="[
-          `pizza__filling--${value}`,
+          count > 0 ? `pizza__filling--${value}` : '',
           count > 1 ? `pizza__filling--${countIngredients(count)}` : '',
         ]"
       ></div>
