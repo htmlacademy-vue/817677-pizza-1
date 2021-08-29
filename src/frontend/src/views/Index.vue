@@ -7,7 +7,7 @@
         <div class="content__dough">
           <BuilderDoughSelector
             :dough="builder.dough"
-            :dough-type="pizza.dough"
+            :dough-type="pizza.dough.value"
             @change-dough="updatePizzaParams({ dough: $event })"
           />
         </div>
@@ -15,7 +15,7 @@
         <div class="content__diameter">
           <BuilderSizeSelector
             :sizes="builder.sizes"
-            :selected-size="pizza.size"
+            :selected-size="pizza.size.value"
             @change-size="updatePizzaParams({ size: $event })"
           />
         </div>
@@ -23,8 +23,8 @@
         <div class="content__ingridients">
           <BuilderIngredientsSelector
             :sauces="builder.sauces"
-            :ingredients="pizza.ingredients"
-            :selected-sauce="pizza.sauce"
+            :ingredients="ingredients"
+            :selected-sauce="pizza.sauce.value"
             @change-sauce="updatePizzaParams({ sauce: $event })"
             @change-ingredient-count="changeIngredientCount"
           />
@@ -41,10 +41,10 @@
 
           <div class="content__constructor">
             <BuilderPizzaView
-              :dough="pizza.dough"
-              :size="pizza.size"
-              :sauce="pizza.sauce"
-              :ingredients="pizza.ingredients"
+              :dough="pizza.dough.value"
+              :size="pizza.size.value"
+              :sauce="pizza.sauce.value"
+              :ingredients="ingredients"
               @change-ingredient-count="changeIngredientCount"
             />
           </div>
@@ -52,6 +52,7 @@
           <BuilderPriceCounter
             :pizza-price="pizzaPrice"
             :disabled="disabledButton"
+            @add-pizza-to-cart="addPizzaToCart"
           />
         </div>
       </div>
@@ -66,8 +67,12 @@ import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 import TextField from "@/common/components/TextField";
 
-import { mapState, mapMutations } from "vuex";
-import { UPDATE_PIZZA } from "@/store/mutation-types";
+import { mapState, mapMutations, mapActions } from "vuex";
+import {
+  UPDATE_PIZZA,
+  ADD_MAIN_ORDER,
+  UPDATE_INGREDIENT_COUNT,
+} from "@/store/mutation-types";
 
 export default {
   name: "Index",
@@ -80,17 +85,17 @@ export default {
     TextField,
   },
   computed: {
-    ...mapState("Builder", ["builder", "pizza"]),
+    ...mapState("Builder", ["builder", "pizza", "ingredients"]),
     doughPrice() {
       const { price } = this.builder.dough.find(
-        (dough) => dough.value === this.pizza.dough
+        (dough) => dough.value === this.pizza.dough.value
       );
 
       return price;
     },
     saucesPrice() {
       const { price } = this.builder.sauces.find(
-        (sauce) => sauce.value === this.pizza.sauce
+        (sauce) => sauce.value === this.pizza.sauce.value
       );
 
       return price;
@@ -109,8 +114,9 @@ export default {
       return 0;
     },
     sizePrice() {
-      const { sizes } = this.builder;
-      const size = sizes.find((size) => size.value === this.pizza.size);
+      const size = this.builder.sizes.find(
+        (size) => size.value === this.pizza.size.value
+      );
 
       return size.multiplier;
     },
@@ -124,30 +130,35 @@ export default {
       return this.ingredientsPrice === 0 || !this.pizza.name;
     },
   },
+  mounted() {
+    this[UPDATE_PIZZA]({ price: this.pizzaPrice });
+  },
+  watch: {
+    pizzaPrice(newPrice, oldPrice) {
+      if (newPrice === oldPrice) {
+        return;
+      }
+
+      this[UPDATE_PIZZA]({ price: newPrice });
+    },
+  },
   methods: {
-    ...mapMutations("Builder", [UPDATE_PIZZA]),
+    ...mapActions("Builder", ["post", "put"]),
+    ...mapMutations("Cart", [ADD_MAIN_ORDER]),
+    ...mapMutations("Builder", [
+      UPDATE_PIZZA,
+      UPDATE_INGREDIENT_COUNT,
+      "resetState",
+    ]),
     changeIngredientCount(ingredient) {
-      const ingredients = this.pizza.ingredients.map(
-        ({ value, count, price, name }) => {
-          let innerCount = count;
-
-          if (ingredient.value === value) {
-            innerCount = ingredient.count;
-          }
-
-          return {
-            name,
-            value,
-            count: innerCount,
-            price,
-          };
-        }
-      );
-
-      this.updatePizzaParams({ ingredients });
+      this.put(ingredient);
     },
     updatePizzaParams(params) {
       this[UPDATE_PIZZA](params);
+    },
+    addPizzaToCart() {
+      this.post(this.pizza);
+      this.resetState();
     },
   },
 };

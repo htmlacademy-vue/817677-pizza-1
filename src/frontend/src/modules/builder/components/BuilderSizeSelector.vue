@@ -9,7 +9,7 @@
         name="diameter"
         :value="value"
         :checked="selectedSize === value"
-        @change="$emit('change-size', value)"
+        @change="$emit('change-size', { name, value })"
       >
         <span>{{ name }}</span>
       </RadioButton>

@@ -7,6 +7,7 @@
       type="text"
       :name="name"
       :placeholder="placeholder"
+      :value="value"
       @input="$emit('input', $event.target.value)"
     />
   </label>

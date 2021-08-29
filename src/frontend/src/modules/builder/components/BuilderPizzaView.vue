@@ -55,15 +55,13 @@ export default {
   },
   methods: {
     addIngredient(ingredient) {
-      let { value, count } = ingredient;
-
-      if (count === 3) {
+      if (ingredient.count === 3) {
         return;
       }
 
       this.$emit("change-ingredient-count", {
-        value,
-        count: count + 1,
+        ...ingredient,
+        count: ingredient.count + 1,
       });
     },
     countIngredients(count) {

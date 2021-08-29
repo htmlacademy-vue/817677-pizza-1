@@ -1,3 +1,5 @@
+import { uniqueId } from "lodash";
+
 export const getFileName = (filePath) =>
   filePath.split("/").pop().split(".")[0];
 
@@ -17,6 +19,7 @@ export const normalizePizza = (pizza) => {
 
   const normalizeIngredients = ingredients.map((ingredient) => ({
     ...ingredient,
+    id: getFileName(ingredient.image),
     value: getFileName(ingredient.image),
     count: 0,
   }));
@@ -52,6 +55,15 @@ export const normalizePizza = (pizza) => {
     sizes: normalizeSizes,
   };
 };
+
+export const normalizeMisc = (misc) =>
+  misc.map((miscItem) => {
+    return {
+      ...miscItem,
+      id: uniqueId(),
+      count: 0,
+    };
+  });
 
 export const capitalize = (string) =>
   `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
