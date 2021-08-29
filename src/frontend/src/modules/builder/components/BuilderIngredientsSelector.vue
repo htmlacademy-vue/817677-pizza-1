@@ -6,13 +6,13 @@
         <p>Основной соус:</p>
 
         <RadioButton
-          v-for="{ name, value } in sauces"
+          v-for="{ name, value, price } in sauces"
           :key="value"
           :label-classes="['radio', 'ingridients__input']"
           name="sauce"
           :value="value"
           :checked="selectedSauce === value"
-          @change="$emit('change-sauce', value)"
+          @change="$emit('change-sauce', { name, value, price })"
         >
           <span>{{ name }}</span>
         </RadioButton>
@@ -24,21 +24,27 @@
         <ul class="ingridients__list">
           <li
             class="ingridients__item"
-            v-for="{ name, value, count, price } in ingredients"
-            :key="value"
+            v-for="ingredient in ingredients"
+            :key="ingredient.value"
           >
-            <AppDrag :transferData="{ value, count, price }">
-              <SelectorItem :classes="`filling--${value}`">
-                {{ name }}
+            <AppDrag
+              :transferData="{
+                value: ingredient.value,
+                count: ingredient.count,
+                price: ingredient.price,
+              }"
+            >
+              <SelectorItem :classes="`filling--${ingredient.value}`">
+                {{ ingredient.name }}
               </SelectorItem>
             </AppDrag>
 
             <ItemCounter
               counter-classes="ingridients__counter"
-              :counter-value="count"
+              :counter-value="ingredient.count"
               @change-counter-value="
                 $emit('change-ingredient-count', {
-                  value,
+                  ...ingredient,
                   count: $event,
                 })
               "

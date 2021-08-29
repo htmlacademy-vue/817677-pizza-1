@@ -1,5 +1,5 @@
 <template>
-  <div class="counter counter--orange" :class="counterClasses">
+  <div class="counter" :class="counterClasses">
     <button
       type="button"
       class="counter__button counter__button--minus"
@@ -19,7 +19,10 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
-      :class="{ 'counter__button--disabled': counterValue === 3 }"
+      :class="{
+        'counter__button--disabled': counterValue === 3,
+        'counter__button--orange': counterColor === 'orange',
+      }"
       :disabled="counterValue === 3"
       @click="incrementCounter"
     >
@@ -32,6 +35,7 @@ export default {
   name: "ItemCounter",
   props: {
     counterClasses: [Array, String],
+    counterColor: String,
     counterValue: {
       type: Number,
       required: true,
@@ -45,6 +49,9 @@ export default {
   watch: {
     innerCounterValue(newValue) {
       this.$emit("change-counter-value", newValue);
+    },
+    counterValue(newValue) {
+      this.innerCounterValue = newValue;
     },
   },
   methods: {

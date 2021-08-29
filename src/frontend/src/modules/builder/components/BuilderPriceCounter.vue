@@ -6,6 +6,7 @@
       class="button"
       :class="{ 'button--disabled': disabled }"
       :disabled="disabled"
+      @click="$emit('add-pizza-to-cart')"
     >
       Готовьте!
     </button>
