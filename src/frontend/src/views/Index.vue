@@ -68,11 +68,7 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 import TextField from "@/common/components/TextField";
 
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import {
-  UPDATE_PIZZA,
-  ADD_MAIN_ORDER,
-  UPDATE_INGREDIENT_COUNT,
-} from "@/store/mutation-types";
+import { UPDATE_PIZZA, RESET_STATE } from "@/store/mutation-types";
 
 export default {
   name: "Index",
@@ -92,13 +88,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Cart", {
+      updatePizza: "put",
+    }),
     ...mapActions("Builder", ["post", "put"]),
-    ...mapMutations("Cart", [ADD_MAIN_ORDER]),
-    ...mapMutations("Builder", [
-      UPDATE_PIZZA,
-      UPDATE_INGREDIENT_COUNT,
-      "resetState",
-    ]),
+    ...mapMutations("Builder", [UPDATE_PIZZA, RESET_STATE]),
     changeIngredientCount(ingredient) {
       this.put(ingredient);
     },
@@ -106,11 +100,18 @@ export default {
       this[UPDATE_PIZZA](params);
     },
     addPizzaToCart() {
-      this.post({
-        ...this.pizza,
-        price: this.pizzaPrice,
-      });
-      this.resetState();
+      if (this.pizza.id) {
+        this.updatePizza({
+          ...this.pizza,
+          price: this.pizzaPrice,
+        });
+      } else {
+        this.post({
+          ...this.pizza,
+          price: this.pizzaPrice,
+        });
+      }
+      this[RESET_STATE]();
     },
   },
 };

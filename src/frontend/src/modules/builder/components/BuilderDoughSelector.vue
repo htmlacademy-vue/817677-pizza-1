@@ -3,13 +3,13 @@
     <h2 class="title title--small sheet__title">Выберите тесто</h2>
     <div class="sheet__content dough">
       <RadioButton
-        v-for="{ name, description, value } in dough"
+        v-for="{ name, description, value, price } in dough"
         :key="name"
         :label-classes="['dough__input', `dough__input--${value}`]"
         name="dough"
         :value="value"
         :checked="doughType === value"
-        @change="$emit('change-dough', { name, value })"
+        @change="$emit('change-dough', { name, value, price })"
       >
         <b>{{ name }}</b>
         <span>{{ description }}</span>

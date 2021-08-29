@@ -34,7 +34,6 @@ const mutations = {
     }
   },
   [UPDATE_ENTITY](state, { module, entity, value }) {
-    // делаем для указанного модуля
     if (module) {
       const index = state[module][entity].findIndex(
         ({ id }) => id === value.id
@@ -43,9 +42,7 @@ const mutations = {
       if (~index) {
         state[module][entity].splice(index, 1, value);
       }
-    }
-    // делаем для корневого модуля
-    else {
+    } else {
       const index = state[entity].findIndex(({ id }) => id === value.id);
 
       if (~index) {

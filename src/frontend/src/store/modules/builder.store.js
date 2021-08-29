@@ -3,9 +3,8 @@ import {
   ADD_ENTITY,
   UPDATE_ENTITY,
   UPDATE_PIZZA,
-  UPDATE_INGREDIENT_COUNT,
   SET_INGREDIENTS,
-  SET_PIZZA_STATE,
+  RESET_STATE,
 } from "@/store/mutation-types";
 import pizzaJson from "@/static/pizza.json";
 import { normalizePizza, capitalize } from "@/common/helpers";
@@ -44,9 +43,7 @@ export default {
         (dough.price + sauce.price + getters.ingredientsPrice) * size.multiplier
       );
     },
-    ingredientsPrice({ pizza }) {
-      const { ingredients } = pizza;
-
+    ingredientsPrice({ ingredients }) {
       if (ingredients.length) {
         return ingredients.reduce((accumulator, ingredient) => {
           const { count, price } = ingredient;
@@ -62,24 +59,10 @@ export default {
     [UPDATE_PIZZA](state, pizza) {
       state.pizza = { ...state.pizza, ...pizza };
     },
-    [UPDATE_INGREDIENT_COUNT](state, ingredient) {
-      const index = state.pizza.ingredients.findIndex(
-        ({ id }) => id === ingredient.id
-      );
-
-      if (~index) {
-        state.pizza.ingredients.splice(index, 1, ingredient);
-      } else {
-        state.pizza.ingredients.push(ingredient);
-      }
-    },
-    [SET_PIZZA_STATE](state, data) {
-      state.pizza = { ...state.pizza, ...data };
-    },
     [SET_INGREDIENTS](state, ingredients) {
-      Object.assign(state.ingredients, ingredients);
+      state.ingredients = ingredients;
     },
-    resetState(state) {
+    [RESET_STATE](state) {
       Object.assign(
         state.pizza,
         setupPizzaState({
@@ -97,7 +80,7 @@ export default {
     query({ commit }) {
       const { ingredients, sizes, dough, sauces } = normalizePizza(pizzaJson);
 
-      commit(SET_PIZZA_STATE, {
+      commit(UPDATE_PIZZA, {
         size: sizes[1],
         dough: dough[0],
         sauce: sauces[0],
@@ -117,24 +100,26 @@ export default {
         { root: true }
       );
     },
-    post({ commit }, pizza) {
+    post({ commit, rootState }, pizza) {
       const data = cloneDeep(pizza);
+      const ingredients = cloneDeep(rootState.Builder.ingredients);
+
       commit(
         ADD_ENTITY,
         {
           module: "Cart",
           entity: "mainOrder",
           value: {
+            ...data,
             id: uniqueId(),
             count: 1,
-            ...data,
+            ingredients,
           },
         },
         { root: true }
       );
     },
     put({ commit }, ingredient) {
-      commit(UPDATE_INGREDIENT_COUNT, ingredient);
       commit(
         UPDATE_ENTITY,
         {

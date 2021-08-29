@@ -62,7 +62,7 @@
 <script>
 import ItemCounter from "@/common/components/ItemCounter";
 import { mapActions, mapMutations } from "vuex";
-import { UPDATE_PIZZA } from "@/store/mutation-types";
+import { UPDATE_PIZZA, SET_INGREDIENTS } from "@/store/mutation-types";
 
 export default {
   name: "CartMainList",
@@ -77,14 +77,16 @@ export default {
   },
   methods: {
     ...mapActions("Cart", ["delete"]),
-    ...mapMutations("Builder", [UPDATE_PIZZA]),
+    ...mapMutations("Builder", [UPDATE_PIZZA, SET_INGREDIENTS]),
     ingredients(pizza) {
       return pizza.ingredients
+        .filter((ingredient) => ingredient.count > 0)
         .map((ingredient) => ingredient.name.toLowerCase())
         .join(", ");
     },
     changePizza(pizza) {
       this[UPDATE_PIZZA](pizza);
+      this[SET_INGREDIENTS](pizza.ingredients);
       this.$router.push({ name: "IndexHome" });
     },
     deletePizza(pizza) {

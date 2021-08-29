@@ -2,16 +2,15 @@ import {
   SET_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
-  UPDATE_MAIN_ORDER,
-  UPDATE_PRICE,
   UPDATE_SUB_ORDER_COUNT,
   SET_SUB_ORDER,
   SET_ADDRESS,
+  RESET_STATE,
 } from "@/store/mutation-types";
 import miscJson from "@/static/misc.json";
 import { normalizeMisc, capitalize } from "@/common/helpers";
-import { uniqueId } from "lodash";
 import Vue from "vue";
+import { cloneDeep } from "lodash";
 
 const entity = "cart";
 const module = capitalize(entity);
@@ -47,22 +46,8 @@ export default {
     },
   },
   mutations: {
-    [UPDATE_MAIN_ORDER](state, pizza) {
-      const ingredients = pizza.ingredients.filter(
-        (ingredient) => ingredient.count > 0
-      );
-
-      state.mainOrder.push({
-        ...pizza,
-        id: uniqueId(),
-        ingredients,
-      });
-    },
     [SET_SUB_ORDER](state, data) {
       state.subOrder = data;
-    },
-    [UPDATE_PRICE](state, data) {
-      state.price = data;
     },
     [UPDATE_SUB_ORDER_COUNT](state, { id, value }) {
       const foundOrder = state.subOrder.find((order) => order.id === id);
@@ -72,7 +57,7 @@ export default {
     [SET_ADDRESS](state, address) {
       state.address = { ...state.address, ...address };
     },
-    resetState(state) {
+    [RESET_STATE](state) {
       Object.assign(state, setupState());
       state.subOrder.forEach((order) => {
         Vue.set(order, "count", 0);
@@ -100,7 +85,7 @@ export default {
         {
           ...namespace,
           entity: "mainOrder",
-          value: pizza,
+          value: cloneDeep(pizza),
         },
         { root: true }
       );

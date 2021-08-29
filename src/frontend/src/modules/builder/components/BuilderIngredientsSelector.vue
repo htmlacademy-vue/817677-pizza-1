@@ -6,13 +6,13 @@
         <p>Основной соус:</p>
 
         <RadioButton
-          v-for="{ name, value } in sauces"
+          v-for="{ name, value, price } in sauces"
           :key="value"
           :label-classes="['radio', 'ingridients__input']"
           name="sauce"
           :value="value"
           :checked="selectedSauce === value"
-          @change="$emit('change-sauce', { name, value })"
+          @change="$emit('change-sauce', { name, value, price })"
         >
           <span>{{ name }}</span>
         </RadioButton>

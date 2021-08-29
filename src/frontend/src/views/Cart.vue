@@ -75,7 +75,11 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import CartMainList from "@/modules/Cart/CartMainList";
 import CartAdditionalList from "@/modules/Cart/CartAdditionalList";
 import CartForm from "@/modules/Cart/CartForm";
-import { UPDATE_SUB_ORDER_COUNT, SET_ADDRESS } from "@/store/mutation-types";
+import {
+  UPDATE_SUB_ORDER_COUNT,
+  SET_ADDRESS,
+  RESET_STATE,
+} from "@/store/mutation-types";
 
 export default {
   name: "Cart",
@@ -98,11 +102,7 @@ export default {
   },
   methods: {
     ...mapActions("Cart", ["put", "delete"]),
-    ...mapMutations("Cart", [
-      UPDATE_SUB_ORDER_COUNT,
-      SET_ADDRESS,
-      "resetState",
-    ]),
+    ...mapMutations("Cart", [UPDATE_SUB_ORDER_COUNT, SET_ADDRESS, RESET_STATE]),
     changePizzaCount(pizza) {
       if (pizza.count === 0) {
         this.delete(pizza);
@@ -118,7 +118,7 @@ export default {
     },
     placeAnOrder() {
       this.showPopup = true;
-      this.resetState();
+      this[RESET_STATE]();
     },
   },
 };
