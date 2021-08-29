@@ -53,6 +53,7 @@
         </div>
       </section>
     </form>
+
     <div v-if="showPopup" class="popup">
       <router-link :to="{ name: 'IndexHome' }" class="close">
         <span class="visually-hidden">Закрыть попап</span>

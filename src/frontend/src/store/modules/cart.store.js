@@ -10,7 +10,8 @@ import {
 } from "@/store/mutation-types";
 import miscJson from "@/static/misc.json";
 import { normalizeMisc, capitalize } from "@/common/helpers";
-import { cloneDeep, uniqueId } from "lodash";
+import { uniqueId } from "lodash";
+import Vue from "vue";
 
 const entity = "cart";
 const module = capitalize(entity);
@@ -73,7 +74,9 @@ export default {
     },
     resetState(state) {
       Object.assign(state, setupState());
-      state.subOrder = cloneDeep(state.misc);
+      state.subOrder.forEach((order) => {
+        Vue.set(order, "count", 0);
+      });
     },
   },
   actions: {
@@ -102,7 +105,7 @@ export default {
         { root: true }
       );
     },
-    delete({ commit }, id) {
+    delete({ commit }, { id }) {
       commit(
         DELETE_ENTITY,
         {

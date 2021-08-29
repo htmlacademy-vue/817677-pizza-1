@@ -3,13 +3,13 @@
     <h2 class="title title--small sheet__title">Выберите размер</h2>
     <div class="sheet__content diameter">
       <RadioButton
-        v-for="{ name, value } in sizes"
+        v-for="{ name, value, multiplier } in sizes"
         :key="value"
         :label-classes="['diameter__input', `diameter__input--${value}`]"
         name="diameter"
         :value="value"
         :checked="selectedSize === value"
-        @change="$emit('change-size', { name, value })"
+        @change="$emit('change-size', { name, value, multiplier })"
       >
         <span>{{ name }}</span>
       </RadioButton>

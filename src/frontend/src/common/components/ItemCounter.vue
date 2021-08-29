@@ -50,6 +50,9 @@ export default {
     innerCounterValue(newValue) {
       this.$emit("change-counter-value", newValue);
     },
+    counterValue(newValue) {
+      this.innerCounterValue = newValue;
+    },
   },
   methods: {
     decrimentCounter() {

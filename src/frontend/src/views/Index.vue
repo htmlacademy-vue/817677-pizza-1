@@ -67,7 +67,7 @@ import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 import TextField from "@/common/components/TextField";
 
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 import {
   UPDATE_PIZZA,
   ADD_MAIN_ORDER,
@@ -86,60 +86,9 @@ export default {
   },
   computed: {
     ...mapState("Builder", ["builder", "pizza", "ingredients"]),
-    doughPrice() {
-      const { price } = this.builder.dough.find(
-        (dough) => dough.value === this.pizza.dough.value
-      );
-
-      return price;
-    },
-    saucesPrice() {
-      const { price } = this.builder.sauces.find(
-        (sauce) => sauce.value === this.pizza.sauce.value
-      );
-
-      return price;
-    },
-    ingredientsPrice() {
-      const { ingredients } = this.pizza;
-
-      if (ingredients.length) {
-        return ingredients.reduce((accumulator, ingredient) => {
-          const { count, price } = ingredient;
-
-          return accumulator + count * price;
-        }, 0);
-      }
-
-      return 0;
-    },
-    sizePrice() {
-      const size = this.builder.sizes.find(
-        (size) => size.value === this.pizza.size.value
-      );
-
-      return size.multiplier;
-    },
-    pizzaPrice() {
-      return (
-        (this.doughPrice + this.saucesPrice + this.ingredientsPrice) *
-        this.sizePrice
-      );
-    },
+    ...mapGetters("Builder", ["pizzaPrice", "ingredientsPrice"]),
     disabledButton() {
       return this.ingredientsPrice === 0 || !this.pizza.name;
-    },
-  },
-  mounted() {
-    this[UPDATE_PIZZA]({ price: this.pizzaPrice });
-  },
-  watch: {
-    pizzaPrice(newPrice, oldPrice) {
-      if (newPrice === oldPrice) {
-        return;
-      }
-
-      this[UPDATE_PIZZA]({ price: newPrice });
     },
   },
   methods: {
@@ -157,7 +106,10 @@ export default {
       this[UPDATE_PIZZA](params);
     },
     addPizzaToCart() {
-      this.post(this.pizza);
+      this.post({
+        ...this.pizza,
+        price: this.pizzaPrice,
+      });
       this.resetState();
     },
   },

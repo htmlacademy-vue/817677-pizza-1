@@ -34,24 +34,36 @@
           </picture>
           <span>Василий Ложкин</span>
         </router-link>
-        <a href="#" @click.prevent="isAuth = false" class="header__logout">
+        <a href="#" @click.prevent="updateAuth(false)" class="header__logout">
           <span>Выйти</span>
         </a>
       </template>
-      <a v-else href="#" @click.prevent="isAuth = true" class="header__login">
+      <a
+        v-else
+        href="#"
+        @click.prevent="updateAuth(true)"
+        class="header__login"
+      >
         <span>Войти</span>
       </a>
     </div>
   </header>
 </template>
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState, mapMutations } from "vuex";
+import { UPDATE_AUTH } from "@/store/mutation-types";
 
 export default {
   name: "HeaderLayout",
   computed: {
     ...mapState("Auth", ["isAuth"]),
     ...mapGetters("Cart", ["fullPrice"]),
+  },
+  methods: {
+    ...mapMutations("Auth", [UPDATE_AUTH]),
+    updateAuth(value) {
+      this[UPDATE_AUTH](value);
+    },
   },
 };
 </script>
