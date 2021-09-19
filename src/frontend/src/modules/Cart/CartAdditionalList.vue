@@ -1,7 +1,7 @@
 <template>
   <ul class="additional-list">
     <li
-      v-for="{ id, name, image, price, count } in subOrder"
+      v-for="{ id, name, image, price, count } in misc"
       :key="name"
       class="additional-list__item sheet"
     >
@@ -16,7 +16,7 @@
           counter-color="orange"
           :counter-value="count"
           @change-counter-value="
-            ($event) => $emit('change-sub-order-count', id, $event)
+            ($event) => $emit('change-misc-count', id, $event)
           "
         />
         <div class="additional-list__price">
@@ -36,7 +36,7 @@ export default {
     ItemCounter,
   },
   props: {
-    subOrder: {
+    misc: {
       type: Array,
       default: () => [],
     },

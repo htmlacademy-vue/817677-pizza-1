@@ -1,4 +1,6 @@
-const IndexHome = () => import("@/views/Index.vue");
+import { auth, isLoggedIn } from "@/middlewares";
+
+const Builder = () => import("@/views/Builder.vue");
 const Login = () => import("@/views/Login.vue");
 const Cart = () => import("@/views/Cart.vue");
 const Orders = () => import("@/views/Orders.vue");
@@ -7,8 +9,8 @@ const Profile = () => import("@/views/Profile.vue");
 export default [
   {
     path: "/",
-    name: "IndexHome",
-    component: IndexHome,
+    name: "Builder",
+    component: Builder,
     meta: {
       layout: "AppLayoutDefault",
     },
@@ -18,7 +20,8 @@ export default [
     name: "Login",
     component: Login,
     meta: {
-      layout: "AppLyaoutEmpty",
+      layout: "AppLayoutEmpty",
+      middlewares: [auth],
     },
   },
   {
@@ -34,7 +37,8 @@ export default [
     name: "Orders",
     component: Orders,
     meta: {
-      layout: "AppLayoutDefault",
+      layout: "AppLayoutMain",
+      middlewares: [auth, isLoggedIn],
     },
   },
   {
@@ -42,7 +46,8 @@ export default [
     name: "Profile",
     component: Profile,
     meta: {
-      layout: "AppLayoutDefault",
+      layout: "AppLayoutMain",
+      middlewares: [auth, isLoggedIn],
     },
   },
 ];

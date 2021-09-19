@@ -1,4 +1,16 @@
-import { uniqueId } from "lodash";
+import resources from "@/common/enums/resources";
+import {
+  AuthApiService,
+  ReadOnlyApiService,
+  DoughApiService,
+  IngredientsApiService,
+  SaucesApiService,
+  SizesApiService,
+  AddressesApiService,
+  OrdersApiService,
+  MiscApiService,
+} from "@/services/api.service";
+import { SET_ENTITY } from "@/store/mutation-types";
 
 export const getFileName = (filePath) =>
   filePath.split("/").pop().split(".")[0];
@@ -9,61 +21,29 @@ export const reverseObject = (object) =>
     {}
   );
 
-export const normalizePizza = (pizza) => {
-  const { dough, ingredients, sauces, sizes } = pizza;
+export const capitalize = (string) =>
+  `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
-  const normalizeDough = dough.map((doughItem) => ({
-    ...doughItem,
-    value: getFileName(doughItem.image).split("-")[1],
-  }));
-
-  const normalizeIngredients = ingredients.map((ingredient) => ({
-    ...ingredient,
-    id: getFileName(ingredient.image),
-    value: getFileName(ingredient.image),
-    count: 0,
-  }));
-
-  const normalizeSizes = sizes.map((size) => {
-    const multiplieres = {
-      1: "small",
-      2: "normal",
-      3: "big",
-    };
-    return {
-      ...size,
-      value: multiplieres[size.multiplier],
-    };
-  });
-
-  const normalizeSauces = sauces.map((sauce) => {
-    const values = {
-      tomato: "Томатный",
-      creamy: "Сливочный",
-    };
-
-    return {
-      ...sauce,
-      value: reverseObject(values)[sauce.name],
-    };
-  });
-
+export const createResources = (notifier) => {
   return {
-    dough: normalizeDough,
-    ingredients: normalizeIngredients,
-    sauces: normalizeSauces,
-    sizes: normalizeSizes,
+    [resources.USER]: new ReadOnlyApiService(resources.USER, notifier),
+    [resources.AUTH]: new AuthApiService(notifier),
+    [resources.DOUGH]: new DoughApiService(notifier),
+    [resources.INGREDIENTS]: new IngredientsApiService(notifier),
+    [resources.SAUCES]: new SaucesApiService(notifier),
+    [resources.SIZES]: new SizesApiService(notifier),
+    [resources.ADDRESSES]: new AddressesApiService(notifier),
+    [resources.ORDERS]: new OrdersApiService(notifier),
+    [resources.MISC]: new MiscApiService(notifier),
   };
 };
 
-export const normalizeMisc = (misc) =>
-  misc.map((miscItem) => {
-    return {
-      ...miscItem,
-      id: uniqueId(),
-      count: 0,
-    };
+export const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+  store.commit(SET_ENTITY, {
+    module: "Auth",
+    entity: "isAuthenticated",
+    value: true,
   });
-
-export const capitalize = (string) =>
-  `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+};
