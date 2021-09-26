@@ -156,7 +156,7 @@ export default {
     },
     placeAnOrder() {
       if (
-        this.address?.test === 2 &&
+        this.address?.test === "new" &&
         !this.$validateFields(
           {
             street: this.address.street,

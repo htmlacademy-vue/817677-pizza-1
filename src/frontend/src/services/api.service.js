@@ -262,14 +262,10 @@ export class OrdersApiService extends CrudApiService {
     if (address) {
       const { id, name, street, building, flat } = address;
 
-      switch (address.test) {
-        case 1:
-        case 2:
-          addressResult = { name, street, building, flat };
-          break;
-        case 3:
-          addressResult = { id };
-          break;
+      if (address.test === "new") {
+        addressResult = { name, street, building, flat };
+      } else {
+        addressResult = { id };
       }
     }
 

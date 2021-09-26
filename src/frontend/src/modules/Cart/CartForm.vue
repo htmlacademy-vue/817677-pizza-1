@@ -4,16 +4,22 @@
       <span class="cart-form__label">Получение заказа:</span>
 
       <select name="test" class="select" @change="changeAddressType">
-        <option value="1">Заберу сам</option>
-        <option value="2">Новый адрес</option>
-        <option v-if="isAuthenticated && addresses.length" value="3">
-          Дом
-        </option>
+        <option value="self">Заберу сам</option>
+        <option value="new">Новый адрес</option>
+        <template v-if="isAuthenticated">
+          <option
+            v-for="address in addresses"
+            :key="address.id"
+            :value="address.id"
+          >
+            {{ address.name }}
+          </option>
+        </template>
       </select>
     </label>
 
     <AppInput
-      v-if="form.test === 1 || form.test === 2"
+      v-if="form.test === 'self' || form.test === 'new'"
       labelText="Контактный телефон:"
       type="text"
       name="phone"
@@ -22,7 +28,7 @@
       classes="input--big-label"
     />
 
-    <div v-if="form.test === 2" class="cart-form__address">
+    <div v-if="form.test === 'new'" class="cart-form__address">
       <span class="cart-form__label">Новый адрес:</span>
 
       <div class="cart-form__input">
@@ -59,7 +65,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "CartForm",
@@ -76,7 +82,7 @@ export default {
   data() {
     return {
       form: {
-        test: 1,
+        test: "self",
         name: "",
         phone: "",
         street: "",
@@ -93,6 +99,8 @@ export default {
     },
   },
   mounted() {
+    this.queryAddresses();
+
     this.form = {
       ...this.form,
       ...this.address,
@@ -101,7 +109,7 @@ export default {
   watch: {
     form: {
       handler(newValue) {
-        if (newValue.test === 2) {
+        if (newValue.test === "new") {
           const data = {
             ...newValue,
             name: `${newValue.street} ${newValue.building} ${newValue.flat}`.trim(),
@@ -114,18 +122,24 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Profile", {
+      queryAddresses: "query",
+    }),
     changeAddressType($event) {
-      this.form.test = parseInt($event.target.value);
+      this.form.test = $event.target.value;
+
       switch (this.form.test) {
-        case 1:
+        case "self":
           this.$emit("change-address");
           break;
-        case 2:
+        case "new":
           this.$emit("change-address", this.form);
           break;
-        case 3:
-          this.$emit("change-address", { id: this.addresses[0].id });
-          break;
+        default:
+          this.$emit("change-address", {
+            test: $event.target.value,
+            id: parseInt($event.target.value),
+          });
       }
     },
   },
