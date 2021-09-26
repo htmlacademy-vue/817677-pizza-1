@@ -3,7 +3,6 @@ import {
   UPDATE_ENTITY,
   DELETE_ENTITY,
   UPDATE_MISC_COUNT,
-  SET_MISC,
   SET_ADDRESS,
   RESET_ADDRESS,
   RESET_STATE,
@@ -40,9 +39,6 @@ export default {
     },
   },
   mutations: {
-    [SET_MISC](state, data) {
-      state.misc = data;
-    },
     [RESET_ADDRESS](state) {
       state.address = null;
     },
@@ -55,7 +51,10 @@ export default {
       state.address = address;
     },
     [RESET_STATE](state) {
-      Object.assign(state, setupState());
+      Object.assign(state, {
+        mainOrder: [],
+        address: null,
+      });
       state.misc.forEach((order) => {
         Vue.set(order, "count", 0);
       });
@@ -65,7 +64,6 @@ export default {
     async query({ commit }) {
       const misc = await this.$api.misc.query();
 
-      commit(SET_MISC, misc);
       commit(
         SET_ENTITY,
         {
@@ -98,7 +96,7 @@ export default {
         { root: true }
       );
     },
-    delete({ commit }, { id }) {
+    delete({ commit }, id) {
       commit(
         DELETE_ENTITY,
         {

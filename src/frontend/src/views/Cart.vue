@@ -26,6 +26,7 @@
 
           <div v-if="hasOrders" class="cart__form">
             <CartForm
+              :address="address"
               :validations="validations"
               @change-address="changeAddress"
             />

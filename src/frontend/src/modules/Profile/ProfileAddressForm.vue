@@ -168,6 +168,16 @@ export default {
       }
 
       this.$emit("submit-address", this.form);
+      this.resetForm();
+    },
+    resetForm() {
+      this.form = {
+        name: "",
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
+      };
     },
   },
 };

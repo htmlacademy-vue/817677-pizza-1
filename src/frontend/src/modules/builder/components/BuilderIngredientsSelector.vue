@@ -42,6 +42,7 @@
             <ItemCounter
               counter-classes="ingridients__counter"
               :counter-value="ingredient.count"
+              :max-counter-value="3"
               @change-counter-value="
                 $emit('change-ingredient-count', {
                   ...ingredient,

@@ -16,7 +16,7 @@
           </div>
 
           <div class="order__sum">
-            <span>Сумма заказа: {{ id }}NBSP{{ price }} ₽</span>
+            <span>Сумма заказа: {{ price }} ₽</span>
           </div>
 
           <div class="order__button">
@@ -117,7 +117,9 @@ export default {
               };
             }),
             misc: this.misc.map((miscItem) => {
-              const foundMisc = orderMisc.find(({ id }) => id === miscItem.id);
+              const foundMisc = orderMisc.find(
+                ({ miscId }) => miscId === miscItem.id
+              );
               let count = 0;
 
               if (foundMisc) {
@@ -236,7 +238,7 @@ export default {
       this.put({
         mainOrder: pizzas,
         misc,
-        address,
+        address: address.name ? address : null,
       });
       this.$router.push({ name: "Cart" });
     },

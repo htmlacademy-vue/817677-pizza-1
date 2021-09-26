@@ -13,7 +13,7 @@
     />
     <div v-else class="sheet address-form">
       <div class="address-form__header">
-        <b>Адрес №{{ number }}. Тест</b>
+        <b>Адрес №{{ number }}</b>
         <div class="address-form__edit">
           <button type="button" class="icon" @click="showAddressForm">
             <span class="visually-hidden">Изменить адрес</span>

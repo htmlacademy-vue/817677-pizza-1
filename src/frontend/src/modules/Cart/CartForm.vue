@@ -64,6 +64,10 @@ import { mapState } from "vuex";
 export default {
   name: "CartForm",
   props: {
+    address: {
+      type: Object,
+      default: () => {},
+    },
     validations: {
       type: Object,
       default: () => {},
@@ -81,6 +85,19 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState(["Auth"]),
+    ...mapState("Profile", ["addresses"]),
+    isAuthenticated() {
+      return this.Auth.isAuthenticated;
+    },
+  },
+  mounted() {
+    this.form = {
+      ...this.form,
+      ...this.address,
+    };
+  },
   watch: {
     form: {
       handler(newValue) {
@@ -94,13 +111,6 @@ export default {
         }
       },
       deep: true,
-    },
-  },
-  computed: {
-    ...mapState(["Auth"]),
-    ...mapState("Profile", ["addresses"]),
-    isAuthenticated() {
-      return this.Auth.isAuthenticated;
     },
   },
   methods: {
@@ -117,16 +127,6 @@ export default {
           this.$emit("change-address", { id: this.addresses[0].id });
           break;
       }
-    },
-    resetForm() {
-      this.form = {
-        ...this.form,
-        name: "",
-        phone: "",
-        street: "",
-        building: "",
-        flat: "",
-      };
     },
   },
 };

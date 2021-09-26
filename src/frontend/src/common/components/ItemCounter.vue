@@ -5,7 +5,7 @@
       class="counter__button counter__button--minus"
       :class="{ 'counter__button--disabled': counterValue === 0 }"
       :disabled="counterValue === 0"
-      @click="decrimentCounter"
+      @click="decrementCounter"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
@@ -20,10 +20,10 @@
       type="button"
       class="counter__button counter__button--plus"
       :class="{
-        'counter__button--disabled': counterValue === 3,
+        'counter__button--disabled': counterValue === this.maxCounterValue,
         'counter__button--orange': counterColor === 'orange',
       }"
-      :disabled="counterValue === 3"
+      :disabled="counterValue === this.maxCounterValue"
       @click="incrementCounter"
     >
       <span class="visually-hidden">Больше</span>
@@ -40,6 +40,10 @@ export default {
       type: Number,
       required: true,
     },
+    maxCounterValue: {
+      type: Number,
+      default: Infinity,
+    },
   },
   data() {
     return {
@@ -55,7 +59,7 @@ export default {
     },
   },
   methods: {
-    decrimentCounter() {
+    decrementCounter() {
       this.innerCounterValue = this.counterValue - 1;
     },
     incrementCounter() {
@@ -68,8 +72,8 @@ export default {
         result = 0;
       }
 
-      if (result > 3) {
-        result = 3;
+      if (result > this.maxCounterValue) {
+        result = this.maxCounterValue;
       }
 
       this.innerCounterValue = result;

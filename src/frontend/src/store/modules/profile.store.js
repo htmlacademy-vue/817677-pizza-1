@@ -56,18 +56,17 @@ export default {
         );
       });
     },
-    async delete({ commit }, addressId) {
-      this.$api.addresses.delete(addressId).then(() => {
-        commit(
-          DELETE_ENTITY,
-          {
-            ...namespace,
-            entity: "addresses",
-            value: addressId,
-          },
-          { root: true }
-        );
-      });
+    async delete({ commit }, id) {
+      await this.$api.addresses.delete(id);
+      await commit(
+        DELETE_ENTITY,
+        {
+          ...namespace,
+          entity: "addresses",
+          id,
+        },
+        { root: true }
+      );
     },
   },
 };

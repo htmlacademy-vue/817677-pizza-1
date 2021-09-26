@@ -7,7 +7,7 @@ import {
   RESET_STATE,
 } from "@/store/mutation-types";
 import { capitalize } from "@/common/helpers";
-import { cloneDeep } from "lodash";
+import { cloneDeep, uniqueId } from "lodash";
 import Vue from "vue";
 
 const entity = "builder";
@@ -83,10 +83,12 @@ export default {
   },
   actions: {
     async query({ commit }) {
-      const ingredients = await this.$api.ingredients.query();
-      const sizes = await this.$api.sizes.query();
-      const dough = await this.$api.dough.query();
-      const sauces = await this.$api.sauces.query();
+      const [ingredients, sizes, dough, sauces] = await Promise.all([
+        this.$api.ingredients.query(),
+        this.$api.sizes.query(),
+        this.$api.dough.query(),
+        this.$api.sauces.query(),
+      ]);
 
       commit(UPDATE_PIZZA, {
         size: sizes[1],
@@ -119,6 +121,7 @@ export default {
           entity: "mainOrder",
           value: {
             ...data,
+            id: uniqueId(),
             count: 1,
             ingredients,
           },
