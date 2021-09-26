@@ -6,8 +6,7 @@ import {
   SET_INGREDIENTS,
   RESET_STATE,
 } from "@/store/mutation-types";
-import pizzaJson from "@/static/pizza.json";
-import { normalizePizza, capitalize } from "@/common/helpers";
+import { capitalize } from "@/common/helpers";
 import { cloneDeep, uniqueId } from "lodash";
 import Vue from "vue";
 
@@ -24,6 +23,12 @@ const setupPizzaState = ({ dough, size, sauce }) => ({
 });
 
 const setupState = () => ({
+  builder: {
+    dough: [],
+    sizes: [],
+    sauces: [],
+    ingredients: [],
+  },
   pizza: setupPizzaState({
     dough: {},
     size: {},
@@ -77,8 +82,13 @@ export default {
     },
   },
   actions: {
-    query({ commit }) {
-      const { ingredients, sizes, dough, sauces } = normalizePizza(pizzaJson);
+    async query({ commit }) {
+      const [ingredients, sizes, dough, sauces] = await Promise.all([
+        this.$api.ingredients.query(),
+        this.$api.sizes.query(),
+        this.$api.dough.query(),
+        this.$api.sauces.query(),
+      ]);
 
       commit(UPDATE_PIZZA, {
         size: sizes[1],

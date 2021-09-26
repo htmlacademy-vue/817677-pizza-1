@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import VuexPlugins from "@/plugins/vuexPlugins";
 import modules from "@/store/modules";
 import {
   SET_ENTITY,
@@ -18,7 +19,9 @@ const actions = {
   async init({ dispatch }) {
     dispatch("Builder/query");
     dispatch("Cart/query");
-    dispatch("Auth/query");
+  },
+  createNotification(context, data) {
+    console.log(data);
   },
 };
 
@@ -65,5 +68,6 @@ export default new Vuex.Store({
   state,
   actions,
   mutations,
+  plugins: [VuexPlugins],
   modules,
 });

@@ -2,13 +2,12 @@ import {
   SET_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
-  UPDATE_SUB_ORDER_COUNT,
-  SET_SUB_ORDER,
+  UPDATE_MISC_COUNT,
   SET_ADDRESS,
+  RESET_ADDRESS,
   RESET_STATE,
 } from "@/store/mutation-types";
-import miscJson from "@/static/misc.json";
-import { normalizeMisc, capitalize } from "@/common/helpers";
+import { capitalize } from "@/common/helpers";
 import Vue from "vue";
 import { cloneDeep } from "lodash";
 
@@ -18,66 +17,73 @@ const namespace = { entity, module };
 
 const setupState = () => ({
   mainOrder: [],
-  subOrder: [],
-  address: {
-    test: 1,
-    tel: "",
-    street: "",
-    house: "",
-    apartment: "",
-  },
+  misc: [],
+  address: null,
 });
 
 export default {
   namespaced: true,
   state: setupState(),
   getters: {
-    fullPrice({ mainOrder, subOrder }) {
+    fullPrice({ mainOrder, misc }) {
       const priceMainOrder = mainOrder.reduce(
         (acc, { price, count }) => acc + price * count,
         0
       );
-      const priceSubOrder = subOrder.reduce(
+      const priceMisc = misc.reduce(
         (acc, { price, count }) => acc + price * count,
         0
       );
 
-      return priceMainOrder + priceSubOrder;
+      return priceMainOrder + priceMisc;
     },
   },
   mutations: {
-    [SET_SUB_ORDER](state, data) {
-      state.subOrder = data;
+    [RESET_ADDRESS](state) {
+      state.address = null;
     },
-    [UPDATE_SUB_ORDER_COUNT](state, { id, value }) {
-      const foundOrder = state.subOrder.find((order) => order.id === id);
+    [UPDATE_MISC_COUNT](state, { id, value }) {
+      const foundOrder = state.misc.find((order) => order.id === id);
 
       foundOrder.count = value;
     },
     [SET_ADDRESS](state, address) {
-      state.address = { ...state.address, ...address };
+      state.address = address;
     },
     [RESET_STATE](state) {
-      Object.assign(state, setupState());
-      state.subOrder.forEach((order) => {
+      Object.assign(state, {
+        mainOrder: [],
+        address: null,
+      });
+      state.misc.forEach((order) => {
         Vue.set(order, "count", 0);
       });
     },
   },
   actions: {
-    query({ commit }) {
-      const data = normalizeMisc(miscJson);
+    async query({ commit }) {
+      const misc = await this.$api.misc.query();
 
-      commit(SET_SUB_ORDER, data);
       commit(
         SET_ENTITY,
         {
           ...namespace,
           entity: "misc",
-          value: data,
+          value: misc,
         },
         { root: true }
       );
+    },
+    async post({ rootState }) {
+      const { user } = rootState.Auth;
+      const { misc, mainOrder: pizzas, address } = rootState.Cart;
+
+      return await this.$api.orders.post({
+        user,
+        pizzas,
+        misc,
+        address,
+      });
     },
     put({ commit }, pizza) {
       commit(
@@ -90,7 +96,7 @@ export default {
         { root: true }
       );
     },
-    delete({ commit }, { id }) {
+    delete({ commit }, id) {
       commit(
         DELETE_ENTITY,
         {

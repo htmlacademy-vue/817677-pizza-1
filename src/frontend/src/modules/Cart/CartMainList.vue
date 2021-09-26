@@ -87,7 +87,7 @@ export default {
     changePizza(pizza) {
       this[UPDATE_PIZZA](pizza);
       this[SET_INGREDIENTS](pizza.ingredients);
-      this.$router.push({ name: "IndexHome" });
+      this.$router.push({ name: "Builder" });
     },
     deletePizza(pizza) {
       this.delete(pizza.id);

@@ -3,16 +3,16 @@
     <h2 class="title title--small sheet__title">Выберите тесто</h2>
     <div class="sheet__content dough">
       <RadioButton
-        v-for="{ name, description, value, price } in dough"
-        :key="name"
-        :label-classes="['dough__input', `dough__input--${value}`]"
+        v-for="doughItem in dough"
+        :key="doughItem.id"
+        :label-classes="['dough__input', `dough__input--${doughItem.value}`]"
         name="dough"
-        :value="value"
-        :checked="doughType === value"
-        @change="$emit('change-dough', { name, value, price })"
+        :value="doughItem.value"
+        :checked="doughType === doughItem.value"
+        @change="$emit('change-dough', doughItem)"
       >
-        <b>{{ name }}</b>
-        <span>{{ description }}</span>
+        <b>{{ doughItem.name }}</b>
+        <span>{{ doughItem.description }}</span>
       </RadioButton>
     </div>
   </div>
