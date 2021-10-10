@@ -57,7 +57,6 @@
   </div>
 </template>
 <script>
-import AppDrag from "@/common/components/AppDrag";
 import SelectorItem from "@/common/components/SelectorItem";
 import ItemCounter from "@/common/components/ItemCounter";
 import RadioButton from "@/common/components/RadioButton";
@@ -65,7 +64,6 @@ import RadioButton from "@/common/components/RadioButton";
 export default {
   name: "BuilderIngredientsSelector",
   components: {
-    AppDrag,
     SelectorItem,
     ItemCounter,
     RadioButton,

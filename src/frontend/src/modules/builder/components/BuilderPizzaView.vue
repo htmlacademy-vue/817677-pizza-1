@@ -5,26 +5,24 @@
     @drop="addIngredient"
   >
     <div class="pizza__wrapper">
-      <div
-        v-for="{ value, count } in ingredients"
-        :key="value"
-        class="pizza__filling"
-        :class="[
-          count > 0 ? `pizza__filling--${value}` : '',
-          count > 1 ? `pizza__filling--${countIngredients(count)}` : '',
-        ]"
-      ></div>
+      <transition-group name="roll" mode="out-in">
+        <div
+          v-for="{ value, count } in ingredients"
+          v-show="count > 0"
+          :key="value"
+          class="pizza__filling"
+          :class="[
+            count > 0 ? `pizza__filling--${value}` : '',
+            count > 1 ? `pizza__filling--${countIngredients(count)}` : '',
+          ]"
+        ></div>
+      </transition-group>
     </div>
   </AppDrop>
 </template>
 <script>
-import AppDrop from "@/common/components/AppDrop";
-
 export default {
   name: "BuilderPizzaView",
-  components: {
-    AppDrop,
-  },
   props: {
     dough: {
       type: String,
@@ -42,6 +40,11 @@ export default {
       type: Array,
       default: () => [],
     },
+  },
+  data() {
+    return {
+      show: false,
+    };
   },
   computed: {
     normalizeDoughType() {
@@ -76,4 +79,19 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.roll-enter-active {
+  animation: roll-in 0.5s;
+}
+.roll-leave-active {
+  animation: roll-in 0.5s reverse;
+}
+@keyframes roll-in {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
