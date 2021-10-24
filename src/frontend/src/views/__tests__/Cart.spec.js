@@ -1,16 +1,12 @@
 import { mount, createLocalVue } from "@vue/test-utils";
 import { generateMockStore } from "@/store/mocks";
-import {
-  ADD_ENTITY,
-  SET_ENTITY,
-  UPDATE_MISC_COUNT,
-  RESET_STATE,
-} from "@/store/mutation-types";
+import { ADD_ENTITY, SET_ENTITY } from "@/store/mutation-types";
 import mainOrderJson from "@/__tests__/fixtures/mainOrder.json";
 import ItemCounter from "@/common/components/ItemCounter";
 import AppInput from "@/common/components/AppInput";
 import misc from "@/static/misc.json";
 import Cart from "@/views/Cart.vue";
+import { setupState } from "@/store/modules/cart.store";
 import Vuex from "vuex";
 
 // Создаём локальный тестовый экземпляр Vue.
@@ -22,23 +18,26 @@ localVue.component("AppInput", AppInput);
 // Добавляем в него Vuex.
 localVue.use(Vuex);
 
+const pizza = mainOrderJson[0];
+const normalizedMisc = misc.map((miscItem) => {
+  return {
+    ...miscItem,
+    count: 0,
+  };
+});
+
 const createCart = (store) => {
   store.commit(ADD_ENTITY, {
     module: "Cart",
     entity: "mainOrder",
-    value: mainOrderJson[0],
+    value: pizza,
   });
   store.commit(
     SET_ENTITY,
     {
       module: "Cart",
       entity: "misc",
-      value: misc.map((miscItem) => {
-        return {
-          ...miscItem,
-          count: 0,
-        };
-      }),
+      value: normalizedMisc,
     },
     { root: true }
   );
@@ -76,6 +75,7 @@ describe("Cart", () => {
   // Удаляем тест-обёртку после каждого теста.
   afterEach(() => {
     wrapper.destroy();
+    pizza.count = 1;
   });
 
   it("is rendered", () => {
@@ -107,59 +107,76 @@ describe("Cart", () => {
     expect(wrapper.find(".footer").exists()).toBeTruthy();
   });
 
-  it("change pizza count", async () => {
+  it("change pizza count: plus", async () => {
     createCart(store);
     createComponent({ localVue, store, stubs });
 
     const cartListItem = wrapper.find(".cart-list__item");
     const plusBtn = cartListItem.find("[data-test='plus-btn']");
-    const minusBtn = cartListItem.find("[data-test='minus-btn']");
 
     await plusBtn.trigger("click");
-    expect(actions.Cart.put).toHaveBeenCalled();
-
-    await minusBtn.trigger("click");
-    expect(actions.Cart.put).toHaveBeenCalled();
+    expect(actions.Cart.put).toHaveBeenCalledWith(expect.any(Object), {
+      ...pizza,
+      count: 2,
+    });
   });
 
-  // it("change pizza count: delete if one pizza", async () => {
-  //   createCart(store);
-  //   createComponent({ localVue, store, stubs });
-  //
-  //   const cartListItem = wrapper.find(".cart-list__item");
-  //   const minusBtn = cartListItem.find("[data-test='minus-btn']");
-  //
-  //   await minusBtn.trigger("click");
-  //   expect(actions.Cart.delete).toHaveBeenCalled();
-  // });
+  it("change pizza count: minus", async () => {
+    pizza.count = 2;
+    createCart(store);
+    createComponent({ localVue, store, stubs });
+
+    const cartListItem = wrapper.find(".cart-list__item");
+    const minusBtn = cartListItem.find("[data-test='minus-btn']");
+
+    await minusBtn.trigger("click");
+    expect(actions.Cart.put).toHaveBeenCalledWith(expect.any(Object), {
+      ...pizza,
+      count: 1,
+    });
+  });
+
+  it("change pizza count: delete if one pizza", async () => {
+    createCart(store);
+    createComponent({ localVue, store, stubs });
+
+    const cartListItem = wrapper.find(".cart-list__item");
+    const minusBtn = cartListItem.find("[data-test='minus-btn']");
+
+    await minusBtn.trigger("click");
+    expect(actions.Cart.delete).toHaveBeenCalled();
+  });
 
   it("change misc count", async () => {
     createCart(store);
     createComponent({ localVue, store, stubs });
 
-    const spyOnMutation = jest.spyOn(wrapper.vm, UPDATE_MISC_COUNT);
     const additionalListItem = wrapper.find(".additional-list__item");
     const plusBtn = additionalListItem.find("[data-test='plus-btn']");
     const minusBtn = additionalListItem.find("[data-test='minus-btn']");
 
     await plusBtn.trigger("click");
-    expect(spyOnMutation).toHaveBeenCalled();
+    expect(store.state.Cart.misc[0].count).toBe(1);
 
     await minusBtn.trigger("click");
-    expect(spyOnMutation).toHaveBeenCalled();
+    expect(store.state.Cart.misc[0].count).toBe(0);
   });
 
   it("place an order", async () => {
     createCart(store);
     createComponent({ localVue, store, stubs });
 
-    // const spyOnMutation = jest.spyOn(wrapper.vm, RESET_STATE);
     const submit = wrapper.find(".footer__submit [type='submit']");
-    await submit.trigger("click");
 
+    await submit.trigger("click");
     expect(actions.Cart.post).toHaveBeenCalled();
-    // expect(spyOnMutation).toHaveBeenCalled();
-    // expect(wrapper.find(".layout-form").exists()).toBeFalsy();
+
+    await wrapper.vm.$nextTick();
+    expect(store.state.Cart).toEqual({
+      ...setupState(),
+      misc: normalizedMisc,
+    });
+    expect(wrapper.find(".layout-form").exists()).toBeFalsy();
   });
 });
 

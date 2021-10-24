@@ -50,11 +50,8 @@ export default {
   },
   data() {
     return {
-      innerCounterValue: 0,
+      innerCounterValue: this.counterValue,
     };
-  },
-  created() {
-    this.innerCounterValue = this.counterValue;
   },
   watch: {
     innerCounterValue(newValue) {
