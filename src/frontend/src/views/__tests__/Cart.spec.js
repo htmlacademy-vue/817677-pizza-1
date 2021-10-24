@@ -122,16 +122,16 @@ describe("Cart", () => {
     expect(actions.Cart.put).toHaveBeenCalled();
   });
 
-  it("change pizza count: delete if one pizza", async () => {
-    createCart(store);
-    createComponent({ localVue, store, stubs });
-
-    const cartListItem = wrapper.find(".cart-list__item");
-    const minusBtn = cartListItem.find("[data-test='minus-btn']");
-
-    await minusBtn.trigger("click");
-    expect(actions.Cart.delete).toHaveBeenCalled();
-  });
+  // it("change pizza count: delete if one pizza", async () => {
+  //   createCart(store);
+  //   createComponent({ localVue, store, stubs });
+  //
+  //   const cartListItem = wrapper.find(".cart-list__item");
+  //   const minusBtn = cartListItem.find("[data-test='minus-btn']");
+  //
+  //   await minusBtn.trigger("click");
+  //   expect(actions.Cart.delete).toHaveBeenCalled();
+  // });
 
   it("change misc count", async () => {
     createCart(store);
