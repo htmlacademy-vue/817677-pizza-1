@@ -45,9 +45,9 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
-import ProfileUser from "@/modules/Profile/ProfileUser";
-import ProfileAddressInfo from "@/modules/Profile/ProfileAddressInfo";
-import ProfileAddressForm from "@/modules/Profile/ProfileAddressForm";
+import ProfileUser from "@/modules/Profile/components/ProfileUser";
+import ProfileAddressInfo from "@/modules/Profile/components/ProfileAddressInfo";
+import ProfileAddressForm from "@/modules/Profile/components/ProfileAddressForm";
 
 export default {
   name: "Profile",
