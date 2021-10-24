@@ -3,8 +3,9 @@
     <button
       type="button"
       class="counter__button counter__button--minus"
-      :class="{ 'counter__button--disabled': counterValue === 0 }"
-      :disabled="counterValue === 0"
+      :class="{ 'counter__button--disabled': innerCounterValue === 0 }"
+      :disabled="innerCounterValue === 0"
+      data-test="minus-btn"
       @click="decrementCounter"
     >
       <span class="visually-hidden">Меньше</span>
@@ -13,17 +14,19 @@
       type="text"
       name="counter"
       class="counter__input"
-      v-model.number="counterValue"
+      :value="innerCounterValue"
       @input="handleInputCounterValue"
+      @change="handleInputCounterValue"
     />
     <button
       type="button"
       class="counter__button counter__button--plus"
       :class="{
-        'counter__button--disabled': counterValue === this.maxCounterValue,
-        'counter__button--orange': counterColor === 'orange',
+        'counter__button--disabled': innerCounterValue === maxCounterValue,
+        'counter__button--orange': innerCounterValue === 'orange',
       }"
-      :disabled="counterValue === this.maxCounterValue"
+      :disabled="innerCounterValue === maxCounterValue"
+      data-test="plus-btn"
       @click="incrementCounter"
     >
       <span class="visually-hidden">Больше</span>
@@ -47,7 +50,7 @@ export default {
   },
   data() {
     return {
-      innerCounterValue: 0,
+      innerCounterValue: this.counterValue,
     };
   },
   watch: {

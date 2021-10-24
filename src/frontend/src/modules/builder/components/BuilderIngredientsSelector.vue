@@ -34,9 +34,9 @@
                 price: ingredient.price,
               }"
             >
-              <SelectorItem :classes="`filling--${ingredient.value}`">
+              <span class="filling" :class="`filling--${ingredient.value}`">
                 {{ ingredient.name }}
-              </SelectorItem>
+              </span>
             </AppDrag>
 
             <ItemCounter
@@ -57,14 +57,12 @@
   </div>
 </template>
 <script>
-import SelectorItem from "@/common/components/SelectorItem";
 import ItemCounter from "@/common/components/ItemCounter";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderIngredientsSelector",
   components: {
-    SelectorItem,
     ItemCounter,
     RadioButton,
   },

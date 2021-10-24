@@ -58,16 +58,16 @@
       </section>
     </form>
 
-    <ThanksOrder v-show="showPopup" :isAuthenticated="isAuthenticated" />
+    <CartThanksOrder v-show="showPopup" :isAuthenticated="isAuthenticated" />
   </div>
 </template>
 <script>
 import { validator } from "@/common/mixins";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import CartMainList from "@/modules/Cart/CartMainList";
-import CartAdditionalList from "@/modules/Cart/CartAdditionalList";
-import CartForm from "@/modules/Cart/CartForm";
-import ThanksOrder from "@/modules/Cart/ThanksOrder";
+import CartMainList from "@/modules/Cart/components/CartMainList";
+import CartAdditionalList from "@/modules/Cart/components/CartAdditionalList";
+import CartForm from "@/modules/Cart/components/CartForm";
+import CartThanksOrder from "@/modules/Cart/components/CartThanksOrder";
 import {
   UPDATE_MISC_COUNT,
   SET_ADDRESS,
@@ -81,7 +81,7 @@ export default {
     CartMainList,
     CartAdditionalList,
     CartForm,
-    ThanksOrder,
+    CartThanksOrder,
   },
   data() {
     return {

@@ -15,7 +15,7 @@ const entity = "cart";
 const module = capitalize(entity);
 const namespace = { entity, module };
 
-const setupState = () => ({
+export const setupState = () => ({
   mainOrder: [],
   misc: [],
   address: null,

@@ -15,7 +15,7 @@ const setupState = () => ({});
 
 const state = setupState();
 
-const actions = {
+export const actions = {
   async init({ dispatch }) {
     dispatch("Builder/query");
     dispatch("Cart/query");
@@ -25,7 +25,7 @@ const actions = {
   },
 };
 
-const mutations = {
+export const mutations = {
   [SET_ENTITY](state, { module, entity, value }) {
     module ? (state[module][entity] = value) : (state[entity] = value);
   },

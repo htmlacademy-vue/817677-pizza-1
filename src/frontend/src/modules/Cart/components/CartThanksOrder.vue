@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "ThanksOrder",
+  name: "CartThanksOrder",
   props: {
     isAuthenticated: {
       type: Boolean,
