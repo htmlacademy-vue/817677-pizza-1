@@ -13,7 +13,7 @@
 </template>
 <script>
 export default {
-  name: "RudioButton",
+  name: "RadioButton",
   props: {
     labelClasses: [Array, String],
     name: {
