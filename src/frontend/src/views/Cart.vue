@@ -64,10 +64,10 @@
 <script>
 import { validator } from "@/common/mixins";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import CartMainList from "@/modules/Cart/components/CartMainList";
-import CartAdditionalList from "@/modules/Cart/components/CartAdditionalList";
-import CartForm from "@/modules/Cart/components/CartForm";
-import CartThanksOrder from "@/modules/Cart/components/CartThanksOrder";
+import CartMainList from "@/modules/cart/components/CartMainList";
+import CartAdditionalList from "@/modules/cart/components/CartAdditionalList";
+import CartForm from "@/modules/cart/components/CartForm";
+import CartThanksOrder from "@/modules/cart/components/CartThanksOrder";
 import {
   UPDATE_MISC_COUNT,
   SET_ADDRESS,
@@ -76,6 +76,7 @@ import {
 
 export default {
   name: "Cart",
+  layout: "AppLayoutDefault",
   mixins: [validator],
   components: {
     CartMainList,

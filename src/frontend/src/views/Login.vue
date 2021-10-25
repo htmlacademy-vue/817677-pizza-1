@@ -34,9 +34,12 @@
 </template>
 <script>
 import { validator } from "@/common/mixins";
+import { auth } from "@/middlewares";
 
 export default {
   name: "Login",
+  layout: "AppLayoutEmpty",
+  middlewares: { auth },
   mixins: [validator],
   data() {
     return {

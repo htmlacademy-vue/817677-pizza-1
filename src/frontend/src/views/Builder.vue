@@ -73,6 +73,7 @@ import { UPDATE_PIZZA, RESET_STATE } from "@/store/mutation-types";
 
 export default {
   name: "Builder",
+  layout: "AppLayoutDefault",
   components: {
     BuilderDoughSelector,
     BuilderSizeSelector,

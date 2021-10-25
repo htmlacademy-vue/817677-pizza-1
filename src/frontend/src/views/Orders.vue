@@ -92,9 +92,12 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import { isLoggedIn, auth } from "@/middlewares";
 
 export default {
   name: "Orders",
+  layout: "AppLayoutMain",
+  middlewares: { isLoggedIn, auth },
   computed: {
     ...mapState("Builder", ["builder"]),
     ...mapState("Orders", ["orders"]),

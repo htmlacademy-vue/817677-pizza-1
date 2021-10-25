@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ProfileAddressForm from "@/modules/Profile/components/ProfileAddressForm";
+import ProfileAddressForm from "@/modules/profile/components/ProfileAddressForm";
 import { mapActions } from "vuex";
 
 export default {

@@ -1,12 +1,12 @@
 import { mount, createLocalVue } from "@vue/test-utils";
 import { generateMockStore } from "@/store/mocks";
 import { ADD_ENTITY, SET_ENTITY } from "@/store/mutation-types";
+import { setupState } from "@/modules/cart/store";
 import mainOrderJson from "@/__tests__/fixtures/mainOrder.json";
 import ItemCounter from "@/common/components/ItemCounter";
 import AppInput from "@/common/components/AppInput";
 import misc from "@/static/misc.json";
 import Cart from "@/views/Cart.vue";
-import { setupState } from "@/store/modules/cart.store";
 import Vuex from "vuex";
 
 // Создаём локальный тестовый экземпляр Vue.
@@ -200,5 +200,5 @@ describe("Cart", () => {
 ...mapState("Cart", ["mainOrder", "misc", "address"]),
 ...mapState("Profile", ["addresses"]),
 ...mapGetters("Cart", ["fullPrice"]),
-...mapState(["Auth"])
+...mapState(["auth"])
  */

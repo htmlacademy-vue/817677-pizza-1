@@ -45,12 +45,16 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
-import ProfileUser from "@/modules/Profile/components/ProfileUser";
-import ProfileAddressInfo from "@/modules/Profile/components/ProfileAddressInfo";
-import ProfileAddressForm from "@/modules/Profile/components/ProfileAddressForm";
+import ProfileUser from "@/modules/profile/components/ProfileUser";
+import ProfileAddressInfo from "@/modules/profile/components/ProfileAddressInfo";
+import ProfileAddressForm from "@/modules/profile/components/ProfileAddressForm";
+
+import { isLoggedIn, auth } from "@/middlewares";
 
 export default {
   name: "Profile",
+  layout: "AppLayoutMain",
+  middlewares: { isLoggedIn, auth },
   components: {
     ProfileUser,
     ProfileAddressInfo,
