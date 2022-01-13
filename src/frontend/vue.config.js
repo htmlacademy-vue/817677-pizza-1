@@ -2,7 +2,10 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: '@import "@/assets/scss/ds-system/ds.scss";',
+        prependData: `
+          @import "@/assets/scss/mixins/mixins";
+          @import "@/assets/scss/ds-system/ds.scss";
+        `,
       },
     },
   },

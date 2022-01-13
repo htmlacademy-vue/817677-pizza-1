@@ -13,15 +13,18 @@
 <script>
 export default {
   name: "ProfileUser",
+
   props: {
     avatar: {
       type: String,
       required: true,
     },
+
     name: {
       type: String,
       required: true,
     },
+
     phone: {
       type: String,
       default: "",
@@ -30,4 +33,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/user.scss";
+</style>

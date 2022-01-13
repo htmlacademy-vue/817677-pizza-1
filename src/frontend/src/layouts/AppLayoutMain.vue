@@ -17,12 +17,15 @@ import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 
 export default {
   name: "AppLayoutMain",
+
   components: {
     AppLayoutHeader,
     AppLayoutSidebar,
   },
+
   computed: {
     ...mapState(["Auth"]),
+
     isAuthenticated() {
       return this.Auth.isAuthenticated;
     },

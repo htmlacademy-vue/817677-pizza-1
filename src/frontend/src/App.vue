@@ -17,12 +17,14 @@ export default {
   components: {
     AppLayout,
   },
+
   data() {
     return {
       prevHeight: 0,
       transitionName: "slide",
     };
   },
+
   created() {
     window.onerror = function (msg, url, line, col, error) {
       console.error(error);
@@ -44,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/assets/scss/app";
+@import "~@/assets/scss/app.scss";
 
 .slide-left-enter-active,
 .slide-left-leave-active,

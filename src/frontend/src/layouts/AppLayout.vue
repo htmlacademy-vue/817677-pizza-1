@@ -8,6 +8,7 @@ const DEFAULT_LAYOUT = "AppLayoutDefault";
 
 export default {
   name: "AppLayout",
+
   computed: {
     layout() {
       const layout = this.$route.meta.layout || DEFAULT_LAYOUT;
@@ -16,4 +17,12 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+// layout
+@import "~@/assets/scss/layout/main.scss";
+@import "~@/assets/scss/layout/header.scss";
+@import "~@/assets/scss/layout/content.scss";
+@import "~@/assets/scss/layout/sheet.scss";
+@import "~@/assets/scss/layout/container.scss";
+@import "~@/assets/scss/layout/layout.scss";
+</style>

@@ -22,6 +22,7 @@
 <script>
 export default {
   name: "CartThanksOrder",
+
   props: {
     isAuthenticated: {
       type: Boolean,
@@ -31,16 +32,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition-duration: 0.3s;
-  transition-property: opacity;
-  transition-timing-function: ease;
-}
-
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-}
+<style lang="scss" scoped>
+@import "~@/assets/scss/layout/popup.scss";
 </style>

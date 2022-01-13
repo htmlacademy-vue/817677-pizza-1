@@ -20,47 +20,20 @@
           </div>
 
           <div class="order__button">
-            <button
-              type="button"
-              class="button button--border"
-              @click="deleteOrder(id)"
-            >
+            <AppButton type="button" border @click="deleteOrder(id)">
               Удалить
-            </button>
+            </AppButton>
           </div>
           <div class="order__button">
-            <button type="button" class="button" @click="repeatOrder(id)">
+            <AppButton type="button" @click="repeatOrder(id)">
               Повторить
-            </button>
+            </AppButton>
           </div>
         </div>
 
         <ul class="order__list">
           <li v-for="pizza in pizzas" :key="pizza.id" class="order__item">
-            <div class="product">
-              <img
-                src="@/assets/img/product.svg"
-                class="product__img"
-                width="56"
-                height="56"
-                :alt="pizza.name"
-              />
-              <div class="product__text">
-                <h2>{{ pizza.name }}</h2>
-                <ul>
-                  <li>
-                    {{ pizza.size.name }}, на
-                    {{ normalizeDoughType(pizza.dough) }}
-                    тесте
-                  </li>
-                  <li>Соус: томатный</li>
-                  <li>
-                    Начинка:
-                    {{ ingredientsToSting(pizza.ingredients) }}
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <Product :pizza="pizza" />
 
             <p class="order__price">{{ pizza.price * pizza.count }} ₽</p>
           </li>
@@ -91,17 +64,25 @@
   </div>
 </template>
 <script>
+import Product from "@/common/components/Product";
 import { mapActions, mapState } from "vuex";
 import { isLoggedIn, auth } from "@/middlewares";
 
 export default {
   name: "Orders",
+
+  components: {
+    Product,
+  },
+
   layout: "AppLayoutMain",
   middlewares: { isLoggedIn, auth },
+
   computed: {
     ...mapState("Builder", ["builder"]),
     ...mapState("Orders", ["orders"]),
     ...mapState("Cart", ["misc"]),
+
     normalizeOrders() {
       return this.orders.reduce(
         (
@@ -156,15 +137,18 @@ export default {
       );
     },
   },
+
   mounted() {
     this.query();
   },
+
   methods: {
     ...mapActions("Orders", {
       deleteOrder: "delete",
       query: "query",
       put: "put",
     }),
+
     fullAddress({ name, street = "", building = "", flat = "" }) {
       if (name) {
         return name;
@@ -172,6 +156,7 @@ export default {
 
       return `${street} ${building} ${flat}`;
     },
+
     normalizePizzaInfo({ doughId, sizeId, sauceId, ingredients }) {
       const dough = this.builder.dough.find(({ id }) => id === doughId);
       const size = this.builder.sizes.find(({ id }) => id === sizeId);
@@ -190,17 +175,20 @@ export default {
         ingredients: foundIngredients,
       };
     },
+
     ingredientsToSting(ingredients) {
       return ingredients
         .map(({ name, count }) => `${name} ${count}`)
         .join(", ");
     },
+
     normalizeMiscInfo({ miscId, quantity }) {
       return {
         ...this.misc.find(({ id }) => id === miscId),
         count: quantity,
       };
     },
+
     pizzaPrice(pizza) {
       const { dough, sauce, size, ingredients } = pizza;
 
@@ -209,6 +197,7 @@ export default {
         size.multiplier
       );
     },
+
     fullOrdersPrice(pizzas, misc = []) {
       const fullPizzasPrice = pizzas.reduce(
         (acc, pizza) =>
@@ -223,6 +212,7 @@ export default {
 
       return fullPizzasPrice + fullMiscPrice;
     },
+
     ingredientsPrice(ingredients) {
       return ingredients.reduce((acc, ingredient) => {
         const { count, price } = ingredient;
@@ -230,9 +220,11 @@ export default {
         return acc + count * price;
       }, 0);
     },
+
     normalizeDoughType({ name }) {
       return name.toLowerCase().substring(0, name.length - 1) + "м";
     },
+
     repeatOrder(id) {
       const { pizzas, misc, address } = this.normalizeOrders.find(
         (order) => order.id === id
@@ -248,4 +240,6 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/order.scss";
+</style>

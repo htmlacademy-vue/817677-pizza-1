@@ -10,10 +10,10 @@
       <div class="sign-form__input">
         <AppInput
           v-model="email"
-          labelText="E-mail"
+          label-text="E-mail"
           type="email"
           name="email"
-          :errorText="validations.email.error"
+          :error-text="validations.email.error"
           placeholder="example@mail.ru"
         />
       </div>
@@ -21,26 +21,27 @@
       <div class="sign-form__input">
         <AppInput
           v-model="password"
-          labelText="Пароль"
+          label-text="Пароль"
           type="password"
           name="pass"
-          :errorText="validations.password.error"
+          :error-text="validations.password.error"
           placeholder="***********"
         />
       </div>
-      <button type="submit" class="button">Авторизоваться</button>
+      <AppButton type="submit">Авторизоваться</AppButton>
     </form>
   </div>
 </template>
 <script>
 import { validator } from "@/common/mixins";
-import { auth } from "@/middlewares";
+import { auth, isLoggedOut } from "@/middlewares";
 
 export default {
   name: "Login",
   layout: "AppLayoutEmpty",
-  middlewares: { auth },
+  middlewares: { isLoggedOut, auth },
   mixins: [validator],
+
   data() {
     return {
       email: "",
@@ -50,6 +51,7 @@ export default {
           error: "",
           rules: ["required", "email"],
         },
+
         password: {
           error: "",
           rules: ["required"],
@@ -57,14 +59,17 @@ export default {
       },
     };
   },
+
   watch: {
     email() {
       this.$clearValidationErrors();
     },
+
     password() {
       this.$clearValidationErrors();
     },
   },
+
   methods: {
     async login() {
       if (
@@ -84,4 +89,6 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/layout/sign-form.scss";
+</style>

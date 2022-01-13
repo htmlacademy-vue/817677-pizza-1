@@ -9,7 +9,11 @@ export default {
   namespaced: true,
   state: {
     isAuthenticated: false,
-    user: {},
+    user: {
+      avatar: "",
+      name: "",
+      phone: "",
+    },
   },
   getters: {
     getUserAttribute: (state) => (attr) => state.user ? state.user[attr] : "",
