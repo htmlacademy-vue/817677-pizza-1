@@ -22,9 +22,11 @@ import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderDoughSelector",
+
   components: {
     RadioButton,
   },
+
   props: {
     dough: {
       type: Array,
@@ -37,4 +39,6 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/dough.scss";
+</style>

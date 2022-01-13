@@ -1,6 +1,8 @@
 <template>
   <div class="sheet">
-    <h2 class="title title--small sheet__title">Выберите ингридиенты</h2>
+    <h2 class="title title--small sheet__title">
+      Выберите ингридиенты
+    </h2>
     <div class="sheet__content ingridients">
       <div class="ingridients__sauce">
         <p>Основной соус:</p>
@@ -23,18 +25,22 @@
 
         <ul class="ingridients__list">
           <li
-            class="ingridients__item"
             v-for="ingredient in ingredients"
             :key="ingredient.id"
+            class="ingridients__item"
           >
             <AppDrag
-              :transferData="{
+              :transfer-data="{
+                id: ingredient.id,
                 value: ingredient.value,
                 count: ingredient.count,
                 price: ingredient.price,
               }"
             >
-              <span class="filling" :class="`filling--${ingredient.value}`">
+              <span
+                class="filling"
+                :class="`filling--${ingredient.value}`"
+              >
                 {{ ingredient.name }}
               </span>
             </AppDrag>
@@ -57,29 +63,36 @@
   </div>
 </template>
 <script>
-import ItemCounter from "@/common/components/ItemCounter";
-import RadioButton from "@/common/components/RadioButton";
+import ItemCounter from '@/common/components/ItemCounter';
+import RadioButton from '@/common/components/RadioButton';
 
 export default {
-  name: "BuilderIngredientsSelector",
+  name: 'BuilderIngredientsSelector',
+
   components: {
     ItemCounter,
-    RadioButton,
+    RadioButton
   },
+
   props: {
     sauces: {
       type: Array,
-      required: true,
+      required: true
     },
+
     ingredients: {
       type: Array,
-      required: true,
+      required: true
     },
+
     selectedSauce: {
       type: String,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 };
 </script>
-<style lang=""></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/filling.scss";
+@import "~@/assets/scss/blocks/ingridients.scss";
+</style>

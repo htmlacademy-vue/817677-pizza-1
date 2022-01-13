@@ -33,10 +33,10 @@
 
           <div class="content__pizza">
             <AppInput
+              v-model="pizza.name"
               label-text="Название пиццы"
               name="pizza_name"
               placeholder="Введите название пиццы"
-              v-model="pizza.name"
               @input="updatePizzaParams({ name: $event })"
             />
 
@@ -74,6 +74,7 @@ import { UPDATE_PIZZA, RESET_STATE } from "@/store/mutation-types";
 export default {
   name: "Builder",
   layout: "AppLayoutDefault",
+
   components: {
     BuilderDoughSelector,
     BuilderSizeSelector,
@@ -81,25 +82,31 @@ export default {
     BuilderPizzaView,
     BuilderPriceCounter,
   },
+
   computed: {
     ...mapState("Builder", ["builder", "pizza", "ingredients"]),
     ...mapGetters("Builder", ["pizzaPrice", "ingredientsPrice"]),
+
     disabledButton() {
       return this.ingredientsPrice === 0 || !this.pizza.name;
     },
   },
+
   methods: {
     ...mapActions("Cart", {
       updatePizza: "put",
     }),
     ...mapActions("Builder", ["post", "put"]),
     ...mapMutations("Builder", [UPDATE_PIZZA, RESET_STATE]),
+
     changeIngredientCount(ingredient) {
       this.put(ingredient);
     },
+
     updatePizzaParams(params) {
       this[UPDATE_PIZZA](params);
     },
+
     addPizzaToCart() {
       if (this.pizza.id) {
         this.updatePizza({

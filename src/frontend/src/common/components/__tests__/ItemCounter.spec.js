@@ -5,7 +5,6 @@ import ItemCounter from "@/common/components/ItemCounter";
 describe("ItemCounter", () => {
   const propsData = {
     counterClasses: "",
-    counterColor: "",
     counterValue: 3,
     maxCounterValue: 5,
   };

@@ -3,13 +3,39 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ["plugin:vue/essential", "eslint:recommended", "@vue/prettier"],
+  extends: ["plugin:vue/recommended"],
   parserOptions: {
     parser: "babel-eslint",
   },
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    'template-curly-spacing': 'off',
+    indent: [
+      'error',
+      2,
+      {
+        ignoredNodes: [ 'TemplateLiteral' ]
+      }
+    ],
+    'max-len': [ 'error', { code: 80 } ],
+    semi: [ 'error', 'always' ],
+    curly: [ 'error', 'all' ],
+    quotes: [ 'error', 'single' ],
+    'comma-dangle': [ 'error', 'never' ],
+    'arrow-parens': [ 'error', 'as-needed' ],
+    'space-in-parens': [ 'error', 'never' ],
+    'object-curly-spacing': [ 'error', 'always' ],
+    'array-bracket-spacing': [ 'error', 'never' ],
+    // https://eslint.vuejs.org/rules/
+    'vue/html-self-closing': ['error', {
+      'html': {
+        'void': 'always'
+      }
+    }],
+    'vue/match-component-file-name': 'error',
+    'vue/component-name-in-template-casing': 'error',
+    'vue/eqeqeq': 'error'
   },
   overrides: [
     {

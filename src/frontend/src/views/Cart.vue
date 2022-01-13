@@ -1,6 +1,10 @@
 <template>
   <div>
-    <form v-if="!showPopup" class="layout-form">
+    <form
+      v-if="!showPopup"
+      class="layout-form"
+      @submit.o.prevent="placeAnOrder"
+    >
       <main class="content cart">
         <div class="container">
           <div class="cart__title">
@@ -51,14 +55,12 @@
         </div>
 
         <div class="footer__submit">
-          <button type="submit" class="button" @click.prevent="placeAnOrder">
-            Оформить заказ
-          </button>
+          <AppButton type="submit">Оформить заказ</AppButton>
         </div>
       </section>
     </form>
 
-    <CartThanksOrder v-show="showPopup" :isAuthenticated="isAuthenticated" />
+    <CartThanksOrder v-show="showPopup" :is-authenticated="isAuthenticated" />
   </div>
 </template>
 <script>
@@ -78,12 +80,14 @@ export default {
   name: "Cart",
   layout: "AppLayoutDefault",
   mixins: [validator],
+
   components: {
     CartMainList,
     CartAdditionalList,
     CartForm,
     CartThanksOrder,
   },
+
   data() {
     return {
       showPopup: false,
@@ -92,10 +96,12 @@ export default {
           error: "",
           rules: ["required"],
         },
+
         building: {
           error: "",
           rules: ["required"],
         },
+
         flat: {
           error: "",
           rules: ["required"],
@@ -103,32 +109,40 @@ export default {
       },
     };
   },
+
   computed: {
     ...mapState("Cart", ["mainOrder", "misc", "address"]),
     ...mapState("Profile", ["addresses"]),
     ...mapGetters("Cart", ["fullPrice"]),
     ...mapState(["Auth"]),
+
     isAuthenticated() {
       return this.Auth.isAuthenticated;
     },
+
     hasOrders() {
       return this.mainOrder.length > 0;
     },
   },
+
   watch: {
     ["address.street"]() {
       this.$clearValidationErrors();
     },
+
     ["address.building"]() {
       this.$clearValidationErrors();
     },
+
     ["address.flat"]() {
       this.$clearValidationErrors();
     },
   },
+
   methods: {
     ...mapActions("Cart", ["post", "put", "delete"]),
     ...mapMutations("Cart", [UPDATE_MISC_COUNT, SET_ADDRESS, RESET_STATE]),
+
     changePizzaCount(pizza) {
       if (pizza.count === 0) {
         this.delete(pizza);
@@ -136,12 +150,15 @@ export default {
         this.put(pizza);
       }
     },
+
     changeMiscCount(id, value) {
       this[UPDATE_MISC_COUNT]({ id, value });
     },
+
     changeAddress(address = null) {
       this[SET_ADDRESS](address);
     },
+
     placeAnOrder() {
       if (
         this.address?.test === "new" &&
@@ -165,4 +182,8 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/layout/layout-form.scss";
+@import "~@/assets/scss/blocks/cart.scss";
+@import "~@/assets/scss/blocks/footer.scss";
+</style>

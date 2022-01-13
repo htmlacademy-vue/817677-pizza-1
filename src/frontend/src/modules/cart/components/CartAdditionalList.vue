@@ -32,9 +32,11 @@ import ItemCounter from "@/common/components/ItemCounter";
 
 export default {
   name: "CartAdditionalList",
+
   components: {
     ItemCounter,
   },
+
   props: {
     misc: {
       type: Array,
@@ -44,4 +46,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/additional-list.scss";
+</style>

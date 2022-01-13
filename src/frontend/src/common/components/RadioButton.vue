@@ -14,16 +14,23 @@
 <script>
 export default {
   name: "RadioButton",
+
   props: {
-    labelClasses: [Array, String],
+    labelClasses: {
+      type: [Array, String],
+      default: "",
+    },
+
     name: {
       type: String,
       required: true,
     },
+
     value: {
       type: String,
       required: true,
     },
+
     checked: {
       type: Boolean,
       required: true,
@@ -31,4 +38,6 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/radio.scss";
+</style>

@@ -1,26 +1,7 @@
 <template>
   <ul class="cart-list sheet">
     <li v-for="pizza in mainOrder" :key="pizza.id" class="cart-list__item">
-      <div class="product cart-list__product">
-        <img
-          src="@/assets/img/product.svg"
-          class="product__img"
-          width="56"
-          height="56"
-          :alt="pizza.name"
-        />
-        <div class="product__text">
-          <h2>{{ pizza.name }}</h2>
-          <ul>
-            <li>
-              {{ pizza.size.name }}, на
-              {{ pizza.dough.name.toLowerCase() }} тесте
-            </li>
-            <li>Соус: {{ pizza.sauce.name.toLowerCase() }}</li>
-            <li>Начинка: {{ ingredients(pizza) }}</li>
-          </ul>
-        </div>
-      </div>
+      <Product :pizza="pizza" classes="cart-list__product" />
 
       <ItemCounter
         counter-classes="additional-list__counter"
@@ -60,35 +41,34 @@
 </template>
 
 <script>
-import ItemCounter from "@/common/components/ItemCounter";
+import Product from "@/common/components/Product";
 import { mapActions, mapMutations } from "vuex";
 import { UPDATE_PIZZA, SET_INGREDIENTS } from "@/store/mutation-types";
 
 export default {
   name: "CartMainList",
+
   components: {
-    ItemCounter,
+    Product,
   },
+
   props: {
     mainOrder: {
       type: Array,
       default: () => [],
     },
   },
+
   methods: {
     ...mapActions("Cart", ["delete"]),
     ...mapMutations("Builder", [UPDATE_PIZZA, SET_INGREDIENTS]),
-    ingredients(pizza) {
-      return pizza.ingredients
-        .filter((ingredient) => ingredient.count > 0)
-        .map((ingredient) => ingredient.name.toLowerCase())
-        .join(", ");
-    },
+
     changePizza(pizza) {
       this[UPDATE_PIZZA](pizza);
       this[SET_INGREDIENTS](pizza.ingredients);
       this.$router.push({ name: "Builder" });
     },
+
     deletePizza(pizza) {
       this.delete(pizza.id);
     },
@@ -96,4 +76,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/cart-list.scss";
+</style>

@@ -27,19 +27,16 @@
     <div v-if="addressFormIsVisible" class="layout__address">
       <ProfileAddressForm
         :number="addresses.length + 1"
+        address-form-is-visible
         @submit-address="addAddress"
         @delete-address="addressFormIsVisible = false"
       />
     </div>
 
     <div v-else class="layout__button">
-      <button
-        type="button"
-        class="button button--border"
-        @click="showAddressForm"
-      >
+      <AppButton type="button" border @click="showAddressForm">
         Добавить новый адрес
-      </button>
+      </AppButton>
     </div>
   </div>
 </template>
@@ -55,29 +52,36 @@ export default {
   name: "Profile",
   layout: "AppLayoutMain",
   middlewares: { isLoggedIn, auth },
+
   components: {
     ProfileUser,
     ProfileAddressInfo,
     ProfileAddressForm,
   },
+
   data() {
     return {
       addressFormIsVisible: false,
     };
   },
+
   computed: {
     ...mapState("Auth", ["user"]),
     ...mapState("Profile", ["addresses"]),
     ...mapGetters("Auth", ["getUserAttribute"]),
   },
+
   mounted() {
     this.query();
   },
+
   methods: {
     ...mapActions("Profile", ["query", "post", "delete"]),
+
     showAddressForm() {
       this.addressFormIsVisible = true;
     },
+
     addAddress(address) {
       this.post(address);
     },

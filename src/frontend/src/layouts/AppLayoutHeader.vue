@@ -1,7 +1,10 @@
 <template>
   <header class="header">
     <div class="header__logo">
-      <router-link :to="{ name: 'Builder' }" class="logo">
+      <router-link
+        :to="{ name: 'Builder' }"
+        class="logo"
+      >
         <img
           src="@/assets/img/logo.svg"
           alt="V!U!E! Pizza logo"
@@ -11,7 +14,9 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link :to="{ name: 'Cart' }"> {{ fullPrice }} ₽ </router-link>
+      <router-link :to="{ name: 'Cart' }">
+        {{ fullPrice }} ₽
+      </router-link>
     </div>
     <div class="header__user">
       <router-link
@@ -31,7 +36,11 @@
           />
           <span>{{ getUserAttribute("name") }}</span>
         </router-link>
-        <a href="#" @click.prevent="$logout" class="header__logout">
+        <a
+          href="#"
+          class="header__logout"
+          @click.prevent="$logout"
+        >
           <span>Выйти</span>
         </a>
       </template>
@@ -39,22 +48,24 @@
   </header>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { logout } from "@/common/mixins";
+import { mapGetters } from 'vuex';
+import { logout } from '@/common/mixins';
 
 export default {
-  name: "AppLayoutHeader",
+  name: 'AppLayoutHeader',
   mixins: [logout],
+
   props: {
     showLogin: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
+
   computed: {
-    ...mapGetters("Cart", ["fullPrice"]),
-    ...mapGetters("Auth", ["getUserAttribute"]),
-  },
+    ...mapGetters('Cart', ['fullPrice']),
+    ...mapGetters('Auth', ['getUserAttribute'])
+  }
 };
 </script>
 <style lang="scss" scoped></style>

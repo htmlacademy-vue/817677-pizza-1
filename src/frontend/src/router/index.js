@@ -17,7 +17,9 @@ export default Promise.all(routes).then((routes) => {
     if (!to.meta.middlewares) {
       return next();
     }
+
     const middlewares = to.meta.middlewares;
+
     Object.keys(middlewares).forEach((middleware) => {
       middlewares[middleware]({ to, from, next, store });
     });

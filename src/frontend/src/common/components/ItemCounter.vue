@@ -36,38 +36,49 @@
 <script>
 export default {
   name: "ItemCounter",
+
   props: {
-    counterClasses: [Array, String],
-    counterColor: String,
+    counterClasses: {
+      type: [Array, String],
+      default: "",
+    },
+
     counterValue: {
       type: Number,
       required: true,
     },
+
     maxCounterValue: {
       type: Number,
       default: Infinity,
     },
   },
+
   data() {
     return {
       innerCounterValue: this.counterValue,
     };
   },
+
   watch: {
     innerCounterValue(newValue) {
       this.$emit("change-counter-value", newValue);
     },
+
     counterValue(newValue) {
       this.innerCounterValue = newValue;
     },
   },
+
   methods: {
     decrementCounter() {
       this.innerCounterValue = this.counterValue - 1;
     },
+
     incrementCounter() {
       this.innerCounterValue = this.counterValue + 1;
     },
+
     handleInputCounterValue(e) {
       let result = parseInt(e.target.value);
 
@@ -85,4 +96,6 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/counter.scss";
+</style>

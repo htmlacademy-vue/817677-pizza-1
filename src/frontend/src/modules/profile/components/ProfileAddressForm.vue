@@ -7,69 +7,77 @@
   >
     <div class="address-form__header">
       <b>Адрес № {{ number }}</b>
-    </div>
-
-    <div class="address-form__wrapper">
-      <div class="address-form__input">
-        <AppInput
-          v-model="form.name"
-          labelText="Название адреса*"
-          type="text"
-          name="name"
-          placeholder="Введите название адреса"
-          :errorText="validations.name.error"
-        />
-      </div>
-      <div class="address-form__input address-form__input--size--normal">
-        <AppInput
-          v-model="form.street"
-          labelText="Улица*"
-          type="text"
-          name="street"
-          placeholder="Введите название улицы"
-          :errorText="validations.street.error"
-        />
-      </div>
-      <div class="address-form__input address-form__input--size--small">
-        <AppInput
-          v-model="form.building"
-          labelText="Дом*"
-          type="text"
-          name="building"
-          placeholder="Введите название дома"
-          :errorText="validations.building.error"
-        />
-      </div>
-      <div class="address-form__input address-form__input--size--small">
-        <AppInput
-          v-model="form.flat"
-          labelText="Квартира"
-          type="text"
-          name="flat"
-          placeholder="Введите № квартиры"
-        />
-      </div>
-      <div class="address-form__input">
-        <AppInput
-          v-model="form.comment"
-          labelText="Комментарий"
-          type="text"
-          name="comment"
-          placeholder="Введите комментарий"
-        />
+      <div v-if="!editAddress" class="address-form__edit">
+        <AppIconButton @click="showAddressForm" />
       </div>
     </div>
 
-    <div class="address-form__buttons">
-      <button
-        type="button"
-        class="button button--transparent"
-        @click="$emit('delete-address')"
-      >
-        Удалить
-      </button>
-      <button type="submit" class="button">Сохранить</button>
-    </div>
+    <template v-if="!editAddress">
+      <p>{{ fullAddress }}</p>
+      <small v-if="comment">
+        {{ comment }}
+      </small>
+    </template>
+
+    <template v-else>
+      <div class="address-form__wrapper">
+        <div class="address-form__input">
+          <AppInput
+            v-model="form.name"
+            label-text="Название адреса*"
+            type="text"
+            name="name"
+            placeholder="Введите название адреса"
+            :error-text="validations.name.error"
+          />
+        </div>
+        <div class="address-form__input address-form__input--size--normal">
+          <AppInput
+            v-model="form.street"
+            label-text="Улица*"
+            type="text"
+            name="street"
+            placeholder="Введите название улицы"
+            :error-text="validations.street.error"
+          />
+        </div>
+        <div class="address-form__input address-form__input--size--small">
+          <AppInput
+            v-model="form.building"
+            label-text="Дом*"
+            type="text"
+            name="building"
+            placeholder="Введите название дома"
+            :error-text="validations.building.error"
+          />
+        </div>
+        <div class="address-form__input address-form__input--size--small">
+          <AppInput
+            v-model="form.flat"
+            label-text="Квартира"
+            type="text"
+            name="flat"
+            placeholder="Введите № квартиры"
+          />
+        </div>
+        <div class="address-form__input">
+          <AppInput
+            v-model="form.comment"
+            label-text="Комментарий"
+            type="text"
+            name="comment"
+            placeholder="Введите комментарий"
+          />
+        </div>
+      </div>
+
+      <div class="address-form__buttons">
+        <AppButton type="button" transparent @click="deleteAddress">
+          Удалить
+        </AppButton>
+        <AppButton type="submit">Сохранить</AppButton>
+      </div>
+    </template>
   </form>
 </template>
 
@@ -79,36 +87,44 @@ import { validator } from "@/common/mixins";
 export default {
   name: "ProfileAddressForm",
   mixins: [validator],
+
   props: {
-    formIsVisible: {
-      type: Boolean,
-      default: false,
-    },
     number: {
       type: Number,
       default: 1,
     },
+
     name: {
       type: String,
       default: "",
     },
+
     street: {
       type: String,
       default: "",
     },
+
     building: {
       type: String,
       default: "",
     },
+
     flat: {
       type: String,
       default: "",
     },
+
     comment: {
       type: String,
       default: "",
     },
+
+    addressFormIsVisible: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   data() {
     return {
       form: {
@@ -118,6 +134,7 @@ export default {
         flat: "",
         comment: "",
       },
+
       validations: {
         name: {
           error: "",
@@ -132,27 +149,45 @@ export default {
           rules: ["required"],
         },
       },
+
+      editAddress: false,
     };
   },
+
+  computed: {
+    fullAddress() {
+      return `${this.street} ${this.building} ${this.flat}`.trim();
+    },
+  },
+
+  watch: {
+    ["form.name"]() {
+      this.$clearValidationErrors();
+    },
+
+    ["form.street"]() {
+      this.$clearValidationErrors();
+    },
+
+    ["form.building"]() {
+      this.$clearValidationErrors();
+    },
+  },
+
   mounted() {
     this.form.name = this.name;
     this.form.street = this.street;
     this.form.building = this.building;
     this.form.flat = this.flat;
     this.form.comment = this.flat;
+    this.editAddress = this.addressFormIsVisible;
   },
-  watch: {
-    ["form.name"]() {
-      this.$clearValidationErrors();
-    },
-    ["form.street"]() {
-      this.$clearValidationErrors();
-    },
-    ["form.building"]() {
-      this.$clearValidationErrors();
-    },
-  },
+
   methods: {
+    showAddressForm() {
+      this.editAddress = true;
+    },
+
     submit() {
       if (
         !this.$validateFields(
@@ -168,8 +203,15 @@ export default {
       }
 
       this.$emit("submit-address", this.form);
+      this.editAddress = false;
       this.resetForm();
     },
+
+    deleteAddress() {
+      this.$emit("delete-address");
+      this.editAddress = false;
+    },
+
     resetForm() {
       this.form = {
         name: "",
@@ -183,4 +225,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/address-form.scss";
+</style>
