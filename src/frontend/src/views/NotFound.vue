@@ -1,13 +1,13 @@
 <script>
 export default {
-  name: "NotFound",
+  name: 'NotFound',
 
   created() {
-    this.$router.push("/");
+    this.$router.push('/');
   },
 
   render() {
-    return "";
-  },
+    return '';
+  }
 };
 </script>

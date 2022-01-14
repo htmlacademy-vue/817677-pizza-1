@@ -1,16 +1,16 @@
-import Vue from "vue";
-import store from "@/store";
-import Router from "vue-router";
-import routes from "@/router/routes";
+import Vue from 'vue';
+import store from '@/store';
+import Router from 'vue-router';
+import routes from '@/router/routes';
 // import { middlewarePipeline } from "@/middlewares";
 
 Vue.use(Router);
 
-export default Promise.all(routes).then((routes) => {
+export default Promise.all(routes).then(routes => {
   const router = new Router({
-    mode: "history",
+    mode: 'history',
     base: process.env.BASE_URL,
-    routes,
+    routes
   });
 
   router.beforeEach((to, from, next) => {
@@ -20,7 +20,7 @@ export default Promise.all(routes).then((routes) => {
 
     const middlewares = to.meta.middlewares;
 
-    Object.keys(middlewares).forEach((middleware) => {
+    Object.keys(middlewares).forEach(middleware => {
       middlewares[middleware]({ to, from, next, store });
     });
     return next();

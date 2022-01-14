@@ -1,4 +1,4 @@
-import { setAuth } from "@/common/helpers";
+import { setAuth } from '@/common/helpers';
 
 export default function auth({ next, store }) {
   if (!store.state.Auth.isAuthenticated) {

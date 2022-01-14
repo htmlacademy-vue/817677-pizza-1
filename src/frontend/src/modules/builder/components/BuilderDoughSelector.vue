@@ -1,6 +1,8 @@
 <template>
   <div class="sheet">
-    <h2 class="title title--small sheet__title">Выберите тесто</h2>
+    <h2 class="title title--small sheet__title">
+      Выберите тесто
+    </h2>
     <div class="sheet__content dough">
       <RadioButton
         v-for="doughItem in dough"
@@ -18,25 +20,25 @@
   </div>
 </template>
 <script>
-import RadioButton from "@/common/components/RadioButton";
+import RadioButton from '@/common/components/RadioButton';
 
 export default {
-  name: "BuilderDoughSelector",
+  name: 'BuilderDoughSelector',
 
   components: {
-    RadioButton,
+    RadioButton
   },
 
   props: {
     dough: {
       type: Array,
-      required: true,
+      required: true
     },
     doughType: {
       type: String,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -7,7 +7,10 @@
   >
     <div class="address-form__header">
       <b>Адрес № {{ number }}</b>
-      <div v-if="!editAddress" class="address-form__edit">
+      <div
+        v-if="!editAddress"
+        class="address-form__edit"
+      >
         <AppIconButton @click="showAddressForm" />
       </div>
     </div>
@@ -72,106 +75,112 @@
       </div>
 
       <div class="address-form__buttons">
-        <AppButton type="button" transparent @click="deleteAddress">
+        <AppButton
+          type="button"
+          transparent
+          @click="deleteAddress"
+        >
           Удалить
         </AppButton>
-        <AppButton type="submit">Сохранить</AppButton>
+        <AppButton type="submit">
+          Сохранить
+        </AppButton>
       </div>
     </template>
   </form>
 </template>
 
 <script>
-import { validator } from "@/common/mixins";
+import { validator } from '@/common/mixins';
 
 export default {
-  name: "ProfileAddressForm",
+  name: 'ProfileAddressForm',
   mixins: [validator],
 
   props: {
     number: {
       type: Number,
-      default: 1,
+      default: 1
     },
 
     name: {
       type: String,
-      default: "",
+      default: ''
     },
 
     street: {
       type: String,
-      default: "",
+      default: ''
     },
 
     building: {
       type: String,
-      default: "",
+      default: ''
     },
 
     flat: {
       type: String,
-      default: "",
+      default: ''
     },
 
     comment: {
       type: String,
-      default: "",
+      default: ''
     },
 
     addressFormIsVisible: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
 
   data() {
     return {
       form: {
-        name: "",
-        street: "",
-        building: "",
-        flat: "",
-        comment: "",
+        name: '',
+        street: '',
+        building: '',
+        flat: '',
+        comment: ''
       },
 
       validations: {
         name: {
-          error: "",
-          rules: ["required"],
+          error: '',
+          rules: ['required']
         },
         street: {
-          error: "",
-          rules: ["required"],
+          error: '',
+          rules: ['required']
         },
         building: {
-          error: "",
-          rules: ["required"],
-        },
+          error: '',
+          rules: ['required']
+        }
       },
 
-      editAddress: false,
+      editAddress: false
     };
   },
 
   computed: {
     fullAddress() {
       return `${this.street} ${this.building} ${this.flat}`.trim();
-    },
+    }
   },
 
   watch: {
-    ["form.name"]() {
+    ['form.name']() {
       this.$clearValidationErrors();
     },
 
-    ["form.street"]() {
+    ['form.street']() {
       this.$clearValidationErrors();
     },
 
-    ["form.building"]() {
+    ['form.building']() {
       this.$clearValidationErrors();
-    },
+    }
   },
 
   mounted() {
@@ -194,7 +203,7 @@ export default {
           {
             name: this.form.name,
             street: this.form.street,
-            building: this.form.building,
+            building: this.form.building
           },
           this.validations
         )
@@ -202,26 +211,26 @@ export default {
         return;
       }
 
-      this.$emit("submit-address", this.form);
+      this.$emit('submit-address', this.form);
       this.editAddress = false;
       this.resetForm();
     },
 
     deleteAddress() {
-      this.$emit("delete-address");
+      this.$emit('delete-address');
       this.editAddress = false;
     },
 
     resetForm() {
       this.form = {
-        name: "",
-        street: "",
-        building: "",
-        flat: "",
-        comment: "",
+        name: '',
+        street: '',
+        building: '',
+        flat: '',
+        comment: ''
       };
-    },
-  },
+    }
+  }
 };
 </script>
 

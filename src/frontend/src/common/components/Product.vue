@@ -1,5 +1,8 @@
 <template>
-  <div class="product" :class="classes">
+  <div
+    class="product"
+    :class="classes"
+  >
     <img
       src="@/assets/img/product.svg"
       class="product__img"
@@ -22,32 +25,32 @@
 
 <script>
 export default {
-  name: "Product",
+  name: 'Product',
 
   props: {
     pizza: {
       type: Object,
-      required: true,
+      required: true
     },
 
     classes: {
       type: [Array, String],
-      default: "",
-    },
+      default: ''
+    }
   },
 
   methods: {
     normalizeDoughType({ name }) {
-      return name.toLowerCase().substring(0, name.length - 1) + "м";
+      return name.toLowerCase().substring(0, name.length - 1) + 'м';
     },
 
     ingredients(pizza) {
       return pizza.ingredients
-        .filter((ingredient) => ingredient.count > 0)
-        .map((ingredient) => ingredient.name.toLowerCase())
-        .join(", ");
-    },
-  },
+        .filter(ingredient => ingredient.count > 0)
+        .map(ingredient => ingredient.name.toLowerCase())
+        .join(', ');
+    }
+  }
 };
 </script>
 

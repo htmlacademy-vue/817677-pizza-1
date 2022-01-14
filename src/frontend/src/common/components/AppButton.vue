@@ -17,44 +17,44 @@
 </template>
 <script>
 export default {
-  name: "AppButton",
+  name: 'AppButton',
 
   props: {
     type: {
       type: String,
-      default: "button",
+      default: 'button'
     },
 
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     border: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     transparent: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     arrow: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     white: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     classes: {
       type: [Array, String],
-      default: "",
-    },
-  },
+      default: ''
+    }
+  }
 };
 </script>
 <style lang="scss">

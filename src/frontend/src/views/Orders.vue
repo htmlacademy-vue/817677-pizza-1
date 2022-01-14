@@ -1,7 +1,9 @@
 <template>
   <div class="layout__content">
     <div class="layout__title">
-      <h1 class="title title--big">История заказов</h1>
+      <h1 class="title title--big">
+        История заказов
+      </h1>
     </div>
 
     <template v-if="Object.values(builder).every((item) => item.length)">
@@ -20,28 +22,44 @@
           </div>
 
           <div class="order__button">
-            <AppButton type="button" border @click="deleteOrder(id)">
+            <AppButton
+              type="button"
+              border
+              @click="deleteOrder(id)"
+            >
               Удалить
             </AppButton>
           </div>
           <div class="order__button">
-            <AppButton type="button" @click="repeatOrder(id)">
+            <AppButton
+              type="button"
+              @click="repeatOrder(id)"
+            >
               Повторить
             </AppButton>
           </div>
         </div>
 
         <ul class="order__list">
-          <li v-for="pizza in pizzas" :key="pizza.id" class="order__item">
+          <li
+            v-for="pizza in pizzas"
+            :key="pizza.id"
+            class="order__item"
+          >
             <Product :pizza="pizza" />
 
-            <p class="order__price">{{ pizza.price * pizza.count }} ₽</p>
+            <p class="order__price">
+              {{ pizza.price * pizza.count }} ₽
+            </p>
           </li>
         </ul>
 
         <ul class="order__additional">
           <template v-for="miscItem in misc">
-            <li v-if="miscItem.count > 0" :key="miscItem.miscId">
+            <li
+              v-if="miscItem.count > 0"
+              :key="miscItem.miscId"
+            >
               <img
                 :src="miscItem.image"
                 width="20"
@@ -56,32 +74,36 @@
           </template>
         </ul>
 
-        <p v-if="!!address.addressId" class="order__address">
+        <p
+          v-if="!!address.addressId"
+          class="order__address"
+        >
           Адрес доставки: {{ fullAddress(address) }}
         </p>
       </section>
     </template>
   </div>
 </template>
+
 <script>
-import Product from "@/common/components/Product";
-import { mapActions, mapState } from "vuex";
-import { isLoggedIn, auth } from "@/middlewares";
+import Product from '@/common/components/Product';
+import { mapActions, mapState } from 'vuex';
+import { isLoggedIn, auth } from '@/middlewares';
 
 export default {
-  name: "Orders",
+  name: 'Orders',
 
   components: {
-    Product,
+    Product
   },
 
-  layout: "AppLayoutMain",
+  layout: 'AppLayoutMain',
   middlewares: { isLoggedIn, auth },
 
   computed: {
-    ...mapState("Builder", ["builder"]),
-    ...mapState("Orders", ["orders"]),
-    ...mapState("Cart", ["misc"]),
+    ...mapState('Builder', ['builder']),
+    ...mapState('Orders', ['orders']),
+    ...mapState('Cart', ['misc']),
 
     normalizeOrders() {
       return this.orders.reduce(
@@ -90,17 +112,17 @@ export default {
           { id, userId, orderPizzas, orderMisc = [], orderAddress, addressId }
         ) => {
           const normalizeOrder = {
-            pizzas: orderPizzas.map((pizza) => {
+            pizzas: orderPizzas.map(pizza => {
               const normalizePizza = this.normalizePizzaInfo(pizza);
 
               return {
                 ...normalizePizza,
                 name: pizza.name,
                 count: pizza.quantity,
-                price: this.pizzaPrice(normalizePizza),
+                price: this.pizzaPrice(normalizePizza)
               };
             }),
-            misc: this.misc.map((miscItem) => {
+            misc: this.misc.map(miscItem => {
               const foundMisc = orderMisc.find(
                 ({ miscId }) => miscId === miscItem.id
               );
@@ -113,14 +135,14 @@ export default {
               return {
                 ...miscItem,
                 count,
-                price: miscItem.price,
+                price: miscItem.price
               };
             }),
             address: {
               test: 2,
               addressId,
-              ...orderAddress,
-            },
+              ...orderAddress
+            }
           };
 
           return [
@@ -129,13 +151,13 @@ export default {
               id,
               userId,
               price: this.fullOrdersPrice(orderPizzas, orderMisc),
-              ...normalizeOrder,
-            },
+              ...normalizeOrder
+            }
           ];
         },
         []
       );
-    },
+    }
   },
 
   mounted() {
@@ -143,13 +165,13 @@ export default {
   },
 
   methods: {
-    ...mapActions("Orders", {
-      deleteOrder: "delete",
-      query: "query",
-      put: "put",
+    ...mapActions('Orders', {
+      deleteOrder: 'delete',
+      query: 'query',
+      put: 'put'
     }),
 
-    fullAddress({ name, street = "", building = "", flat = "" }) {
+    fullAddress({ name, street = '', building = '', flat = '' }) {
       if (name) {
         return name;
       }
@@ -164,7 +186,7 @@ export default {
       const foundIngredients = ingredients.map(
         ({ ingredientId, quantity }) => ({
           ...this.builder.ingredients.find(({ id }) => id === ingredientId),
-          count: quantity,
+          count: quantity
         })
       );
 
@@ -172,20 +194,20 @@ export default {
         dough,
         size,
         sauce,
-        ingredients: foundIngredients,
+        ingredients: foundIngredients
       };
     },
 
     ingredientsToSting(ingredients) {
       return ingredients
         .map(({ name, count }) => `${name} ${count}`)
-        .join(", ");
+        .join(', ');
     },
 
     normalizeMiscInfo({ miscId, quantity }) {
       return {
         ...this.misc.find(({ id }) => id === miscId),
-        count: quantity,
+        count: quantity
       };
     },
 
@@ -222,24 +244,25 @@ export default {
     },
 
     normalizeDoughType({ name }) {
-      return name.toLowerCase().substring(0, name.length - 1) + "м";
+      return name.toLowerCase().substring(0, name.length - 1) + 'м';
     },
 
     repeatOrder(id) {
       const { pizzas, misc, address } = this.normalizeOrders.find(
-        (order) => order.id === id
+        order => order.id === id
       );
 
       this.put({
         mainOrder: pizzas,
         misc,
-        address: address.name ? address : null,
+        address: address.name ? address : null
       });
-      this.$router.push({ name: "Cart" });
-    },
-  },
+      this.$router.push({ name: 'Cart' });
+    }
+  }
 };
 </script>
+
 <style lang="scss" scoped>
 @import "~@/assets/scss/blocks/order.scss";
 </style>

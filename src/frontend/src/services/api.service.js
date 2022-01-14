@@ -1,6 +1,6 @@
-import JwtService from "@/services/jwt.service";
-import axios from "@/plugins/axios";
-import { getFileName, reverseObject } from "../common/helpers";
+import JwtService from '@/services/jwt.service';
+import axios from '@/plugins/axios';
+import { getFileName, reverseObject } from '../common/helpers';
 
 class BaseApiService {
   constructor(notifier) {
@@ -64,25 +64,25 @@ export class AuthApiService extends BaseApiService {
   setAuthHeader() {
     const token = JwtService.getToken();
 
-    axios.defaults.headers.common["Authorization"] = token
+    axios.defaults.headers.common['Authorization'] = token
       ? `Bearer ${token}`
-      : "";
+      : '';
   }
 
   async login(params) {
-    const { data } = await axios.post("login", params);
+    const { data } = await axios.post('login', params);
 
     return data;
   }
 
   async logout() {
-    const { data } = await axios.delete("logout");
+    const { data } = await axios.delete('logout');
 
     return data;
   }
 
   async getMe() {
-    const { data } = await axios.get("whoAmI");
+    const { data } = await axios.get('whoAmI');
 
     return data;
   }
@@ -90,13 +90,13 @@ export class AuthApiService extends BaseApiService {
 
 export class DoughApiService extends CrudApiService {
   constructor(notifier) {
-    super("dough", notifier);
+    super('dough', notifier);
   }
 
   _normalize(dough) {
-    return dough.map((doughItem) => ({
+    return dough.map(doughItem => ({
       ...doughItem,
-      value: getFileName(doughItem.image).split("-")[1],
+      value: getFileName(doughItem.image).split('-')[1]
     }));
   }
 
@@ -109,14 +109,14 @@ export class DoughApiService extends CrudApiService {
 
 export class MiscApiService extends CrudApiService {
   constructor(notifier) {
-    super("misc", notifier);
+    super('misc', notifier);
   }
 
   _normalize(misc) {
-    return misc.map((miscItem) => {
+    return misc.map(miscItem => {
       return {
         ...miscItem,
-        count: 0,
+        count: 0
       };
     });
   }
@@ -130,14 +130,14 @@ export class MiscApiService extends CrudApiService {
 
 export class IngredientsApiService extends CrudApiService {
   constructor(notifier) {
-    super("ingredients", notifier);
+    super('ingredients', notifier);
   }
 
   _normalize(ingredients) {
-    return ingredients.map((ingredient) => ({
+    return ingredients.map(ingredient => ({
       ...ingredient,
       value: getFileName(ingredient.image),
-      count: 0,
+      count: 0
     }));
   }
 
@@ -150,19 +150,19 @@ export class IngredientsApiService extends CrudApiService {
 
 export class SaucesApiService extends CrudApiService {
   constructor(notifier) {
-    super("sauces", notifier);
+    super('sauces', notifier);
   }
 
   _normalize(sauces) {
-    return sauces.map((sauce) => {
+    return sauces.map(sauce => {
       const values = {
-        tomato: "Томатный",
-        creamy: "Сливочный",
+        tomato: 'Томатный',
+        creamy: 'Сливочный'
       };
 
       return {
         ...sauce,
-        value: reverseObject(values)[sauce.name],
+        value: reverseObject(values)[sauce.name]
       };
     });
   }
@@ -176,19 +176,19 @@ export class SaucesApiService extends CrudApiService {
 
 export class SizesApiService extends CrudApiService {
   constructor(notifier) {
-    super("sizes", notifier);
+    super('sizes', notifier);
   }
 
   _normalize(sizes) {
-    return sizes.map((size) => {
+    return sizes.map(size => {
       const multiplieres = {
-        1: "small",
-        2: "normal",
-        3: "big",
+        1: 'small',
+        2: 'normal',
+        3: 'big'
       };
       return {
         ...size,
-        value: multiplieres[size.multiplier],
+        value: multiplieres[size.multiplier]
       };
     });
   }
@@ -202,7 +202,7 @@ export class SizesApiService extends CrudApiService {
 
 export class AddressesApiService extends CrudApiService {
   constructor(notifier) {
-    super("addresses", notifier);
+    super('addresses', notifier);
   }
 
   // _createRequest(address) {
@@ -214,7 +214,7 @@ export class AddressesApiService extends CrudApiService {
 
 export class OrdersApiService extends CrudApiService {
   constructor(notifier) {
-    super("orders", notifier);
+    super('orders', notifier);
   }
 
   _createRequest(order) {
@@ -227,7 +227,7 @@ export class OrdersApiService extends CrudApiService {
           .reduce(
             (acc, { id, count }) => [
               ...acc,
-              { ingredientId: id, quantity: count },
+              { ingredientId: id, quantity: count }
             ],
             []
           );
@@ -240,8 +240,8 @@ export class OrdersApiService extends CrudApiService {
             sauceId: sauce.id,
             sizeId: size.id,
             quantity: count,
-            ingredients: ingredientsResult,
-          },
+            ingredients: ingredientsResult
+          }
         ];
       },
       []
@@ -252,7 +252,7 @@ export class OrdersApiService extends CrudApiService {
       .reduce(
         (acc, miscItem) => [
           ...acc,
-          { miscId: miscItem.id, quantity: miscItem.count },
+          { miscId: miscItem.id, quantity: miscItem.count }
         ],
         []
       );
@@ -262,7 +262,7 @@ export class OrdersApiService extends CrudApiService {
     if (address) {
       const { id, name, street, building, flat } = address;
 
-      if (address.test === "new") {
+      if (address.test === 'new') {
         addressResult = { name, street, building, flat };
       } else {
         addressResult = { id };
@@ -273,7 +273,7 @@ export class OrdersApiService extends CrudApiService {
       userId: user.id,
       pizzas: pizzasResult,
       misc: miscResult,
-      address: addressResult,
+      address: addressResult
     };
   }
 

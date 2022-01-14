@@ -1,5 +1,8 @@
 <template>
-  <div class="counter" :class="counterClasses">
+  <div
+    class="counter"
+    :class="counterClasses"
+  >
     <button
       type="button"
       class="counter__button counter__button--minus"
@@ -35,39 +38,39 @@
 </template>
 <script>
 export default {
-  name: "ItemCounter",
+  name: 'ItemCounter',
 
   props: {
     counterClasses: {
       type: [Array, String],
-      default: "",
+      default: ''
     },
 
     counterValue: {
       type: Number,
-      required: true,
+      required: true
     },
 
     maxCounterValue: {
       type: Number,
-      default: Infinity,
-    },
+      default: Infinity
+    }
   },
 
   data() {
     return {
-      innerCounterValue: this.counterValue,
+      innerCounterValue: this.counterValue
     };
   },
 
   watch: {
     innerCounterValue(newValue) {
-      this.$emit("change-counter-value", newValue);
+      this.$emit('change-counter-value', newValue);
     },
 
     counterValue(newValue) {
       this.innerCounterValue = newValue;
-    },
+    }
   },
 
   methods: {
@@ -91,9 +94,9 @@ export default {
       }
 
       this.innerCounterValue = result;
-      this.$emit("change-counter-value", result);
-    },
-  },
+      this.$emit('change-counter-value', result);
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

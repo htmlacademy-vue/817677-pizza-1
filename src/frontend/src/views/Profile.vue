@@ -1,7 +1,9 @@
 <template>
   <div class="layout__content">
     <div class="layout__title">
-      <h1 class="title title--big">Мои данные</h1>
+      <h1 class="title title--big">
+        Мои данные
+      </h1>
     </div>
 
     <ProfileUser
@@ -13,9 +15,9 @@
     <template v-if="addresses.length > 0">
       <ProfileAddressInfo
         v-for="(address, index) in addresses"
+        :id="address.id"
         :key="address.id"
         :number="index + 1"
-        :id="address.id"
         :name="address.name"
         :street="address.street"
         :building="address.building"
@@ -24,7 +26,10 @@
       />
     </template>
 
-    <div v-if="addressFormIsVisible" class="layout__address">
+    <div
+      v-if="addressFormIsVisible"
+      class="layout__address"
+    >
       <ProfileAddressForm
         :number="addresses.length + 1"
         address-form-is-visible
@@ -33,42 +38,50 @@
       />
     </div>
 
-    <div v-else class="layout__button">
-      <AppButton type="button" border @click="showAddressForm">
+    <div
+      v-else
+      class="layout__button"
+    >
+      <AppButton
+        type="button"
+        border
+        @click="showAddressForm"
+      >
         Добавить новый адрес
       </AppButton>
     </div>
   </div>
 </template>
-<script>
-import { mapState, mapGetters, mapActions } from "vuex";
-import ProfileUser from "@/modules/profile/components/ProfileUser";
-import ProfileAddressInfo from "@/modules/profile/components/ProfileAddressInfo";
-import ProfileAddressForm from "@/modules/profile/components/ProfileAddressForm";
 
-import { isLoggedIn, auth } from "@/middlewares";
+<script>
+import { mapState, mapGetters, mapActions } from 'vuex';
+import ProfileUser from '@/modules/profile/components/ProfileUser';
+import ProfileAddressInfo from '@/modules/profile/components/ProfileAddressInfo';
+import ProfileAddressForm from '@/modules/profile/components/ProfileAddressForm';
+
+import { isLoggedIn, auth } from '@/middlewares';
 
 export default {
-  name: "Profile",
-  layout: "AppLayoutMain",
+  name: 'Profile',
+  layout: 'AppLayoutMain',
   middlewares: { isLoggedIn, auth },
 
   components: {
     ProfileUser,
     ProfileAddressInfo,
-    ProfileAddressForm,
+    ProfileAddressForm
   },
 
   data() {
     return {
-      addressFormIsVisible: false,
+      addressFormIsVisible: false
     };
   },
 
   computed: {
-    ...mapState("Auth", ["user"]),
-    ...mapState("Profile", ["addresses"]),
-    ...mapGetters("Auth", ["getUserAttribute"]),
+    ...mapState('Auth', ['user']),
+    ...mapState('Profile', ['addresses']),
+    ...mapGetters('Auth', ['getUserAttribute'])
   },
 
   mounted() {
@@ -76,7 +89,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("Profile", ["query", "post", "delete"]),
+    ...mapActions('Profile', ['query', 'post', 'delete']),
 
     showAddressForm() {
       this.addressFormIsVisible = true;
@@ -84,8 +97,9 @@ export default {
 
     addAddress(address) {
       this.post(address);
-    },
-  },
+    }
+  }
 };
 </script>
+
 <style lang="scss" scoped></style>

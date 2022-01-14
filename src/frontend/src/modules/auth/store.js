@@ -1,4 +1,4 @@
-import { SET_ENTITY } from "@/store/mutation-types";
+import { SET_ENTITY } from '@/store/mutation-types';
 // import { capitalize } from "@/common/helpers";
 
 // const entity = "auth";
@@ -10,20 +10,20 @@ export default {
   state: {
     isAuthenticated: false,
     user: {
-      avatar: "",
-      name: "",
-      phone: "",
-    },
+      avatar: '',
+      name: '',
+      phone: ''
+    }
   },
   getters: {
-    getUserAttribute: (state) => (attr) => state.user ? state.user[attr] : "",
+    getUserAttribute: state => attr => state.user ? state.user[attr] : ''
   },
   actions: {
     async login({ dispatch }, credentials) {
       const data = await this.$api.auth.login(credentials);
       this.$jwt.saveToken(data.token);
       this.$api.auth.setAuthHeader();
-      dispatch("getMe");
+      dispatch('getMe');
     },
 
     async logout({ commit }, sendRequest = true) {
@@ -36,12 +36,12 @@ export default {
 
       commit(
         SET_ENTITY,
-        { module: "Auth", entity: "isAuthenticated", value: false },
+        { module: 'Auth', entity: 'isAuthenticated', value: false },
         { root: true }
       );
       commit(
         SET_ENTITY,
-        { module: "Auth", entity: "user", value: null },
+        { module: 'Auth', entity: 'user', value: null },
         { root: true }
       );
     },
@@ -51,17 +51,17 @@ export default {
         const data = await this.$api.auth.getMe();
         commit(
           SET_ENTITY,
-          { module: "Auth", entity: "isAuthenticated", value: true },
+          { module: 'Auth', entity: 'isAuthenticated', value: true },
           { root: true }
         );
         commit(
           SET_ENTITY,
-          { module: "Auth", entity: "user", value: data },
+          { module: 'Auth', entity: 'user', value: data },
           { root: true }
         );
       } catch {
-        dispatch("logout", false);
+        dispatch('logout', false);
       }
-    },
-  },
+    }
+  }
 };

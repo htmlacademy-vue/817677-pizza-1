@@ -1,6 +1,8 @@
 <template>
   <div class="sheet">
-    <h2 class="title title--small sheet__title">Выберите размер</h2>
+    <h2 class="title title--small sheet__title">
+      Выберите размер
+    </h2>
     <div class="sheet__content diameter">
       <RadioButton
         v-for="size in sizes"
@@ -17,26 +19,26 @@
   </div>
 </template>
 <script>
-import RadioButton from "@/common/components/RadioButton";
+import RadioButton from '@/common/components/RadioButton';
 
 export default {
-  name: "BuilderSizeSelector",
+  name: 'BuilderSizeSelector',
 
   components: {
-    RadioButton,
+    RadioButton
   },
 
   props: {
     sizes: {
       type: Array,
-      required: true,
+      required: true
     },
 
     selectedSize: {
       type: String,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

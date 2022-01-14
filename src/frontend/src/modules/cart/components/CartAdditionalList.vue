@@ -6,7 +6,12 @@
       class="additional-list__item sheet"
     >
       <p class="additional-list__description">
-        <img :src="image" width="39" height="60" :alt="name" />
+        <img
+          :src="image"
+          width="39"
+          height="60"
+          :alt="name"
+        />
         <span>{{ name }} / {{ price }} ₽</span>
       </p>
 
@@ -28,21 +33,21 @@
 </template>
 
 <script>
-import ItemCounter from "@/common/components/ItemCounter";
+import ItemCounter from '@/common/components/ItemCounter';
 
 export default {
-  name: "CartAdditionalList",
+  name: 'CartAdditionalList',
 
   components: {
-    ItemCounter,
+    ItemCounter
   },
 
   props: {
     misc: {
       type: Array,
-      default: () => [],
-    },
-  },
+      default: () => []
+    }
+  }
 };
 </script>
 

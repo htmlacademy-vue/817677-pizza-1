@@ -4,22 +4,22 @@ import {
   UPDATE_ENTITY,
   UPDATE_PIZZA,
   SET_INGREDIENTS,
-  RESET_STATE,
-} from "@/store/mutation-types";
-import { capitalize } from "@/common/helpers";
-import { cloneDeep, uniqueId } from "lodash";
-import Vue from "vue";
+  RESET_STATE
+} from '@/store/mutation-types';
+import { capitalize } from '@/common/helpers';
+import { cloneDeep, uniqueId } from 'lodash';
+import Vue from 'vue';
 
-const entity = "builder";
+const entity = 'builder';
 const module = capitalize(entity);
 const namespace = { entity, module };
 
 const setupPizzaState = ({ dough, size, sauce }) => ({
-  name: "",
+  name: '',
   dough,
   size,
   sauce,
-  ingredients: [],
+  ingredients: []
 });
 
 const setupState = () => ({
@@ -27,14 +27,14 @@ const setupState = () => ({
     dough: [],
     sizes: [],
     sauces: [],
-    ingredients: [],
+    ingredients: []
   },
   pizza: setupPizzaState({
     dough: {},
     size: {},
-    sauce: {},
+    sauce: {}
   }),
-  ingredients: [],
+  ingredients: []
 });
 
 export default {
@@ -58,7 +58,7 @@ export default {
       }
 
       return 0;
-    },
+    }
   },
   mutations: {
     [UPDATE_PIZZA](state, pizza) {
@@ -73,13 +73,13 @@ export default {
         setupPizzaState({
           size: state.builder.sizes[1],
           dough: state.builder.dough[0],
-          sauce: state.builder.sauces[0],
+          sauce: state.builder.sauces[0]
         })
       );
-      state.ingredients.forEach((ingredient) => {
-        Vue.set(ingredient, "count", 0);
+      state.ingredients.forEach(ingredient => {
+        Vue.set(ingredient, 'count', 0);
       });
-    },
+    }
   },
   actions: {
     async query({ commit }) {
@@ -87,13 +87,13 @@ export default {
         this.$api.ingredients.query(),
         this.$api.sizes.query(),
         this.$api.dough.query(),
-        this.$api.sauces.query(),
+        this.$api.sauces.query()
       ]);
 
       commit(UPDATE_PIZZA, {
         size: sizes[1],
         dough: dough[0],
-        sauce: sauces[0],
+        sauce: sauces[0]
       });
       commit(SET_INGREDIENTS, cloneDeep(ingredients));
       commit(
@@ -104,8 +104,8 @@ export default {
             ingredients,
             sizes,
             dough,
-            sauces,
-          },
+            sauces
+          }
         },
         { root: true }
       );
@@ -117,14 +117,14 @@ export default {
       commit(
         ADD_ENTITY,
         {
-          module: "Cart",
-          entity: "mainOrder",
+          module: 'Cart',
+          entity: 'mainOrder',
           value: {
             ...data,
             id: uniqueId(),
             count: 1,
-            ingredients,
-          },
+            ingredients
+          }
         },
         { root: true }
       );
@@ -134,11 +134,11 @@ export default {
         UPDATE_ENTITY,
         {
           ...namespace,
-          entity: "ingredients",
-          value: ingredient,
+          entity: 'ingredients',
+          value: ingredient
         },
         { root: true }
       );
-    },
-  },
+    }
+  }
 };

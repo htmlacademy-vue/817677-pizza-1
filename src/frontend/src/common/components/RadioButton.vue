@@ -13,29 +13,29 @@
 </template>
 <script>
 export default {
-  name: "RadioButton",
+  name: 'RadioButton',
 
   props: {
     labelClasses: {
       type: [Array, String],
-      default: "",
+      default: ''
     },
 
     name: {
       type: String,
-      required: true,
+      required: true
     },
 
     value: {
       type: String,
-      required: true,
+      required: true
     },
 
     checked: {
       type: Boolean,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

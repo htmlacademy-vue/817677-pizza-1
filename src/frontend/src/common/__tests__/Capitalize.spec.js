@@ -1,7 +1,7 @@
-import { capitalize } from "../helpers";
+import { capitalize } from '../helpers';
 
-describe("capitalize", () => {
-  it("capitalize text", () => {
-    expect(capitalize("capitalize")).toBe("Capitalize");
+describe('capitalize', () => {
+  it('capitalize text', () => {
+    expect(capitalize('capitalize')).toBe('Capitalize');
   });
 });

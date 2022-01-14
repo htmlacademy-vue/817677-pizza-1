@@ -7,23 +7,23 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import AppLayoutHeader from "@/layouts/AppLayoutHeader";
+import { mapState } from 'vuex';
+import AppLayoutHeader from '@/layouts/AppLayoutHeader';
 
 export default {
-  name: "AppLayoutDefault",
+  name: 'AppLayoutDefault',
 
   components: {
-    AppLayoutHeader,
+    AppLayoutHeader
   },
 
   computed: {
-    ...mapState(["Auth"]),
+    ...mapState(['Auth']),
 
     isAuthenticated() {
       return this.Auth.isAuthenticated;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped></style>

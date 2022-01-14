@@ -5,20 +5,20 @@ import {
   UPDATE_MISC_COUNT,
   SET_ADDRESS,
   RESET_ADDRESS,
-  RESET_STATE,
-} from "@/store/mutation-types";
-import { capitalize } from "@/common/helpers";
-import Vue from "vue";
-import { cloneDeep } from "lodash";
+  RESET_STATE
+} from '@/store/mutation-types';
+import { capitalize } from '@/common/helpers';
+import Vue from 'vue';
+import { cloneDeep } from 'lodash';
 
-const entity = "cart";
+const entity = 'cart';
 const module = capitalize(entity);
 const namespace = { entity, module };
 
 export const setupState = () => ({
   mainOrder: [],
   misc: [],
-  address: null,
+  address: null
 });
 
 export default {
@@ -36,14 +36,14 @@ export default {
       );
 
       return priceMainOrder + priceMisc;
-    },
+    }
   },
   mutations: {
     [RESET_ADDRESS](state) {
       state.address = null;
     },
     [UPDATE_MISC_COUNT](state, { id, value }) {
-      const foundOrder = state.misc.find((order) => order.id === id);
+      const foundOrder = state.misc.find(order => order.id === id);
 
       foundOrder.count = value;
     },
@@ -53,12 +53,12 @@ export default {
     [RESET_STATE](state) {
       Object.assign(state, {
         mainOrder: [],
-        address: null,
+        address: null
       });
-      state.misc.forEach((order) => {
-        Vue.set(order, "count", 0);
+      state.misc.forEach(order => {
+        Vue.set(order, 'count', 0);
       });
-    },
+    }
   },
   actions: {
     async query({ commit }) {
@@ -68,8 +68,8 @@ export default {
         SET_ENTITY,
         {
           ...namespace,
-          entity: "misc",
-          value: misc,
+          entity: 'misc',
+          value: misc
         },
         { root: true }
       );
@@ -82,7 +82,7 @@ export default {
         user,
         pizzas,
         misc,
-        address,
+        address
       });
     },
     put({ commit }, pizza) {
@@ -90,8 +90,8 @@ export default {
         UPDATE_ENTITY,
         {
           ...namespace,
-          entity: "mainOrder",
-          value: cloneDeep(pizza),
+          entity: 'mainOrder',
+          value: cloneDeep(pizza)
         },
         { root: true }
       );
@@ -101,11 +101,11 @@ export default {
         DELETE_ENTITY,
         {
           ...namespace,
-          entity: "mainOrder",
-          id,
+          entity: 'mainOrder',
+          id
         },
         { root: true }
       );
-    },
-  },
+    }
+  }
 };

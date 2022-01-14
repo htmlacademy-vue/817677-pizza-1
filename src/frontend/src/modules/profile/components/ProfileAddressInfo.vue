@@ -14,67 +14,67 @@
 </template>
 
 <script>
-import ProfileAddressForm from "@/modules/profile/components/ProfileAddressForm";
-import { mapActions } from "vuex";
+import ProfileAddressForm from '@/modules/profile/components/ProfileAddressForm';
+import { mapActions } from 'vuex';
 
 export default {
-  name: "ProfileAddressInfo",
+  name: 'ProfileAddressInfo',
 
   components: {
-    ProfileAddressForm,
+    ProfileAddressForm
   },
 
   props: {
     number: {
       type: Number,
-      default: 1,
+      default: 1
     },
 
     id: {
       type: Number,
-      default: 1,
+      default: 1
     },
 
     name: {
       type: String,
-      default: "",
+      default: ''
     },
 
     street: {
       type: String,
-      default: "",
+      default: ''
     },
 
     building: {
       type: String,
-      default: "",
+      default: ''
     },
 
     flat: {
       type: String,
-      default: "",
+      default: ''
     },
 
     comment: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
 
   methods: {
-    ...mapActions("Profile", ["put", "delete"]),
+    ...mapActions('Profile', ['put', 'delete']),
 
     updateAddress(address) {
       this.put({
         id: this.id,
-        ...address,
+        ...address
       });
     },
 
     deleteAddress() {
       this.delete(this.id);
-    },
-  },
+    }
+  }
 };
 </script>
 

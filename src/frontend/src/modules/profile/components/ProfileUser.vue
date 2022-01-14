@@ -1,6 +1,11 @@
 <template>
   <div class="user">
-    <img :src="avatar" :alt="name" width="72" height="72" />
+    <img
+      :src="avatar"
+      :alt="name"
+      width="72"
+      height="72"
+    />
     <div class="user__name">
       <span>{{ name }}</span>
     </div>
@@ -12,24 +17,24 @@
 
 <script>
 export default {
-  name: "ProfileUser",
+  name: 'ProfileUser',
 
   props: {
     avatar: {
       type: String,
-      required: true,
+      required: true
     },
 
     name: {
       type: String,
-      required: true,
+      required: true
     },
 
     phone: {
       type: String,
-      default: "",
-    },
-  },
+      default: ''
+    }
+  }
 };
 </script>
 

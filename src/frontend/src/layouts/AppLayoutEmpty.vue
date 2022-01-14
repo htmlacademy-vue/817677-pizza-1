@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: "AppLyaoutEmpty",
+  name: 'AppLyaoutEmpty'
 };
 </script>
 <style lang="scss" scodep></style>

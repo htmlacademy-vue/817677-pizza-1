@@ -12,19 +12,19 @@
 </template>
 <script>
 export default {
-  name: "BuilderPriceCounter",
+  name: 'BuilderPriceCounter',
 
   props: {
     pizzaPrice: {
       type: Number,
-      required: true,
+      required: true
     },
 
     disabled: {
       type: Boolean,
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 };
 </script>
 <style lang="scss" scoped></style>
