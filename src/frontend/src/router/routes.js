@@ -7,57 +7,57 @@
 // const Profile = () => import("@/views/Profile.vue");
 
 // Определяем константы для текущего файла.
-const CARET = "^";
-const COLON = ":";
-const UNDERSCORE = "_";
+const CARET = '^';
+const COLON = ':';
+const UNDERSCORE = '_';
 
 // Данная функция преобразует контекст в строки с расположением файла.
-const importAll = (importItem) =>
-  importItem.keys().map((key) => key.slice(2).replace(".vue", "").split("/"));
+const importAll = importItem =>
+  importItem.keys().map(key => key.slice(2).replace('.vue', '').split('/'));
 
 // Так как нет возможности обратиться из браузера к файловой системе,
 // мы воспользуемся функцией webpack require.context. Данная функция позволяет передать каталог для поиска, флаг,
 // указывающий, следует ли искать и подкаталоги, и регулярное выражение для сопоставления файлов.
-const pages = importAll(require.context("../views", true, /\.vue$/));
+const pages = importAll(require.context('../views', true, /\.vue$/));
 
 // Это ключевая функция, которая отвечает за создание конкретного маршрута.
-const generateRoute = (path) => {
+const generateRoute = path => {
   // Блок для обработки корневых директорий, которые начинаются с index. Например: файл views/index/*
-  if (path[0].toLowerCase().startsWith("index") && path.length > 1) {
+  if (path[0].toLowerCase().startsWith('index') && path.length > 1) {
     path.shift();
   }
 
   // Блок обработки корневых файлов. Например: файлы views/Index.vue, views/User.vue
   if (path.length === 1) {
     const shortcut = path[0].toLowerCase();
-    return shortcut.startsWith("index")
-      ? ""
+    return shortcut.startsWith('index')
+      ? ''
       : shortcut.startsWith(UNDERSCORE)
-      ? shortcut.replace(UNDERSCORE, COLON)
-      : shortcut;
+        ? shortcut.replace(UNDERSCORE, COLON)
+        : shortcut;
   }
 
   // Блок обработки всех остальных маршрутов.
   const lastElement = path[path.length - 1];
 
   // Обработка файлов */Index.vue
-  if (lastElement.toLowerCase().startsWith("index")) {
+  if (lastElement.toLowerCase().startsWith('index')) {
     path.pop();
 
     // Обработка динамических маршрутов.
   } else if (lastElement.startsWith(UNDERSCORE)) {
     path[path.length - 1] = lastElement.replace(UNDERSCORE, COLON);
   }
-  return path.map((segment) => segment.toLowerCase()).join("/");
+  return path.map(segment => segment.toLowerCase()).join('/');
 };
 
 // Определяем правило определения дочерних маршрутов.
-const childrenFilter = (path) => ~path.indexOf(CARET);
+const childrenFilter = path => ~path.indexOf(CARET);
 
 // Функция для обработки дочерних маршрутов.
 const childrenByPath = pages
-  .filter((path) => path.some(childrenFilter))
-  .map((path) => {
+  .filter(path => path.some(childrenFilter))
+  .map(path => {
     // Note: copy path and remove special char ^
     const copy = [...path];
     copy[copy.length - 1] = copy[copy.length - 1].slice(1);
@@ -67,7 +67,7 @@ const childrenByPath = pages
     return {
       path,
       route: `/${generateRoute(copy)}`,
-      key,
+      key
     };
   })
   .reduce((acc, cur) => {
@@ -82,18 +82,18 @@ const childrenByPath = pages
   }, {});
 
 // Определение дефолтного лейаута.
-const defaultLayout = "AppLayoutDefault";
+const defaultLayout = 'AppLayoutDefault';
 
 // Имя файла страницы 404.
-const notFoundPage = "NotFound";
+const notFoundPage = 'NotFound';
 
 // Обработка специального случая для страницы 404.
 const handleNotFoundPage = async () => {
   const module = await import(`../views/${notFoundPage}.vue`);
   const component = await module.default;
   return {
-    path: "*",
-    component,
+    path: '*',
+    component
   };
 };
 
@@ -101,16 +101,16 @@ const handleNotFoundPage = async () => {
 export default pages
 
   // Удаляем дочерние страницы из массива.
-  .filter((path) => !path.some(childrenFilter))
+  .filter(path => !path.some(childrenFilter))
 
   // Преобразуем страницы (строки) в маршруты.
-  .map(async (path) => {
+  .map(async path => {
     if (path.includes(notFoundPage)) {
       return await handleNotFoundPage();
     }
 
     // Получаем компонент vue.
-    const { default: component } = await import(`../views/${path.join("/")}`);
+    const { default: component } = await import(`../views/${path.join('/')}`);
 
     // Получаем свойства из компонента.
     const { layout, middlewares, name } = component;
@@ -123,12 +123,12 @@ export default pages
     if (childrenByPath[route]) {
       const promises = childrenByPath[route].map(async ({ path, route }) => {
         const { default: childComponent } = await import(
-          `../views/${path.join("/")}`
+          `../views/${path.join('/')}`
         );
         const {
           layout: childLayout,
           middlewares: childMiddleware,
-          name: childName,
+          name: childName
         } = component;
         return {
           path: route,
@@ -136,8 +136,8 @@ export default pages
           component: childComponent,
           meta: {
             layout: childLayout || defaultLayout,
-            middlewares: childMiddleware || {},
-          },
+            middlewares: childMiddleware || {}
+          }
         };
       });
       children = await Promise.all(promises);
@@ -148,9 +148,9 @@ export default pages
       component,
       meta: {
         layout: layout || defaultLayout,
-        middlewares: middlewares || {},
+        middlewares: middlewares || {}
       },
-      children,
+      children
     };
   });
 

@@ -1,13 +1,13 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import VuexPlugins from "@/plugins/vuexPlugins";
-import modules from "@/store/modules";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import VuexPlugins from '@/plugins/vuexPlugins';
+import modules from '@/store/modules';
 import {
   SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
-  DELETE_ENTITY,
-} from "@/store/mutation-types";
+  DELETE_ENTITY
+} from '@/store/mutation-types';
 
 Vue.use(Vuex);
 
@@ -17,12 +17,12 @@ const state = setupState();
 
 export const actions = {
   async init({ dispatch }) {
-    dispatch("Builder/query");
-    dispatch("Cart/query");
+    dispatch('Builder/query');
+    dispatch('Cart/query');
   },
   createNotification(context, data) {
     console.log(data);
-  },
+  }
 };
 
 export const mutations = {
@@ -56,12 +56,12 @@ export const mutations = {
   [DELETE_ENTITY](state, { module, entity, id }) {
     if (module) {
       state[module][entity] = state[module][entity].filter(
-        (e) => +e.id !== +id
+        e => +e.id !== +id
       );
     } else {
-      state[entity] = state[entity].filter((e) => +e.id !== +id);
+      state[entity] = state[entity].filter(e => +e.id !== +id);
     }
-  },
+  }
 };
 
 export default new Vuex.Store({
@@ -69,5 +69,5 @@ export default new Vuex.Store({
   actions,
   mutations,
   plugins: [VuexPlugins],
-  modules,
+  modules
 });

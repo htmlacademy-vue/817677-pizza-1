@@ -2,18 +2,18 @@ import {
   SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
-  DELETE_ENTITY,
-} from "@/store/mutation-types";
-import { capitalize } from "@/common/helpers";
+  DELETE_ENTITY
+} from '@/store/mutation-types';
+import { capitalize } from '@/common/helpers';
 
-const entity = "profile";
+const entity = 'profile';
 const module = capitalize(entity);
 const namespace = { entity, module };
 
 export default {
   namespaced: true,
   state: {
-    addresses: [],
+    addresses: []
   },
   getters: {},
   actions: {
@@ -24,8 +24,8 @@ export default {
         SET_ENTITY,
         {
           ...namespace,
-          entity: "addresses",
-          value: addresses,
+          entity: 'addresses',
+          value: addresses
         },
         { root: true }
       );
@@ -37,8 +37,8 @@ export default {
         ADD_ENTITY,
         {
           ...namespace,
-          entity: "addresses",
-          value: newAddress,
+          entity: 'addresses',
+          value: newAddress
         },
         { root: true }
       );
@@ -49,8 +49,8 @@ export default {
           UPDATE_ENTITY,
           {
             ...namespace,
-            entity: "addresses",
-            value: address,
+            entity: 'addresses',
+            value: address
           },
           { root: true }
         );
@@ -62,11 +62,11 @@ export default {
         DELETE_ENTITY,
         {
           ...namespace,
-          entity: "addresses",
-          id,
+          entity: 'addresses',
+          id
         },
         { root: true }
       );
-    },
-  },
+    }
+  }
 };

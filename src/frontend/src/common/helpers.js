@@ -1,4 +1,4 @@
-import resources from "@/common/enums/resources";
+import resources from '@/common/enums/resources';
 import {
   AuthApiService,
   ReadOnlyApiService,
@@ -8,23 +8,23 @@ import {
   SizesApiService,
   AddressesApiService,
   OrdersApiService,
-  MiscApiService,
-} from "@/services/api.service";
-import { SET_ENTITY } from "@/store/mutation-types";
+  MiscApiService
+} from '@/services/api.service';
+import { SET_ENTITY } from '@/store/mutation-types';
 
-export const getFileName = (filePath) =>
-  filePath.split("/").pop().split(".")[0];
+export const getFileName = filePath =>
+  filePath.split('/').pop().split('.')[0];
 
-export const reverseObject = (object) =>
+export const reverseObject = object =>
   Object.entries(object).reduce(
     (acc, [key, value]) => ({ ...acc, [value]: key }),
     {}
   );
 
-export const capitalize = (string) =>
+export const capitalize = string =>
   `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
-export const createResources = (notifier) => {
+export const createResources = notifier => {
   return {
     [resources.USER]: new ReadOnlyApiService(resources.USER, notifier),
     [resources.AUTH]: new AuthApiService(notifier),
@@ -34,16 +34,16 @@ export const createResources = (notifier) => {
     [resources.SIZES]: new SizesApiService(notifier),
     [resources.ADDRESSES]: new AddressesApiService(notifier),
     [resources.ORDERS]: new OrdersApiService(notifier),
-    [resources.MISC]: new MiscApiService(notifier),
+    [resources.MISC]: new MiscApiService(notifier)
   };
 };
 
-export const setAuth = (store) => {
+export const setAuth = store => {
   store.$api.auth.setAuthHeader();
-  store.dispatch("Auth/getMe");
+  store.dispatch('Auth/getMe');
   store.commit(SET_ENTITY, {
-    module: "Auth",
-    entity: "isAuthenticated",
-    value: true,
+    module: 'Auth',
+    entity: 'isAuthenticated',
+    value: true
   });
 };

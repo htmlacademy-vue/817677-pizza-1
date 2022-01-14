@@ -1,11 +1,11 @@
 <script>
 export default {
   created() {
-    this.$router.push("/builder");
+    this.$router.push('/builder');
   },
 
   render() {
-    return "";
-  },
+    return '';
+  }
 };
 </script>

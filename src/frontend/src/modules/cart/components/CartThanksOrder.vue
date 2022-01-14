@@ -1,19 +1,28 @@
 <template>
-  <transition name="fade" mode="out-in">
+  <transition
+    name="fade"
+    mode="out-in"
+  >
     <div class="popup">
-      <router-link :to="{ name: 'Builder' }" class="close">
+      <router-link
+        :to="{ name: 'Builder' }"
+        class="close"
+      >
         <span class="visually-hidden">Закрыть попап</span>
       </router-link>
       <div class="popup__title">
-        <h2 class="title">Спасибо за заказ</h2>
+        <h2 class="title">
+          Спасибо за заказ
+        </h2>
       </div>
       <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
       <div class="popup__button">
         <router-link
           :to="{ name: isAuthenticated ? 'Orders' : 'Builder' }"
           class="button"
-          >Отлично, я жду!</router-link
         >
+          Отлично, я жду!
+        </router-link>
       </div>
     </div>
   </transition>
@@ -21,14 +30,14 @@
 
 <script>
 export default {
-  name: "CartThanksOrder",
+  name: 'CartThanksOrder',
 
   props: {
     isAuthenticated: {
       type: Boolean,
-      default: false,
-    },
-  },
+      default: false
+    }
+  }
 };
 </script>
 

@@ -1,6 +1,6 @@
 export default {
-  INFO: "info",
-  SUCCESS: "success",
-  ERROR: "error",
-  WARNING: "warning",
+  INFO: 'info',
+  SUCCESS: 'success',
+  ERROR: 'error',
+  WARNING: 'warning'
 };

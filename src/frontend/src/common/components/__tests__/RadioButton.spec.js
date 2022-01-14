@@ -1,19 +1,19 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount } from '@vue/test-utils';
 
-import RadioButton from "@/common/components/RadioButton";
+import RadioButton from '@/common/components/RadioButton';
 
-describe("RadioButton", () => {
+describe('RadioButton', () => {
   const propsData = {
-    name: "test",
-    value: "test",
-    checked: false,
+    name: 'test',
+    value: 'test',
+    checked: false
   };
 
   const listeners = { change: null };
 
   let wrapper;
 
-  const createComponent = (options) => {
+  const createComponent = options => {
     wrapper = shallowMount(RadioButton, options);
   };
 
@@ -25,32 +25,32 @@ describe("RadioButton", () => {
     wrapper.destroy();
   });
 
-  it("raises the input event on change", async () => {
+  it('raises the input event on change', async () => {
     createComponent({ propsData, listeners });
-    await wrapper.find("input").trigger("change");
+    await wrapper.find('input').trigger('change');
     expect(listeners.change).toHaveBeenCalled();
   });
 
-  it("check input value: unchecked", async () => {
+  it('check input value: unchecked', async () => {
     propsData.checked = false;
     createComponent({ propsData, listeners });
 
-    expect(wrapper.find("input").element.checked).toBeFalsy();
+    expect(wrapper.find('input').element.checked).toBeFalsy();
   });
 
-  it("check input value: checked", async () => {
+  it('check input value: checked', async () => {
     propsData.checked = true;
     createComponent({ propsData, listeners });
 
-    expect(wrapper.find("input").element.checked).toBeTruthy();
+    expect(wrapper.find('input').element.checked).toBeTruthy();
   });
 
-  it("emitted input value", async () => {
+  it('emitted input value', async () => {
     createComponent({ propsData, listeners });
 
-    const input = wrapper.find("input");
+    const input = wrapper.find('input');
 
-    await input.trigger("change");
+    await input.trigger('change');
 
     expect(wrapper.emitted().change).toBeTruthy();
   });

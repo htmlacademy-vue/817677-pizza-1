@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <AppLayout>
-      <transition :name="transitionName" mode="out-in" appear>
+      <transition
+        :name="transitionName"
+        mode="out-in"
+        appear
+      >
         <router-view />
       </transition>
     </AppLayout>
@@ -9,19 +13,19 @@
 </template>
 
 <script>
-import AppLayout from "@/layouts/AppLayout";
-import { setAuth } from "@/common/helpers";
+import AppLayout from '@/layouts/AppLayout';
+import { setAuth } from '@/common/helpers';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    AppLayout,
+    AppLayout
   },
 
   data() {
     return {
       prevHeight: 0,
-      transitionName: "slide",
+      transitionName: 'slide'
     };
   },
 
@@ -32,16 +36,16 @@ export default {
     if (this.$jwt.getToken()) {
       setAuth(this.$store);
     }
-    this.$store.dispatch("init");
+    this.$store.dispatch('init');
 
     this.$router.beforeEach((to, from, next) => {
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
-      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+      const toDepth = to.path.split('/').length;
+      const fromDepth = from.path.split('/').length;
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
 
       next();
     });
-  },
+  }
 };
 </script>
 

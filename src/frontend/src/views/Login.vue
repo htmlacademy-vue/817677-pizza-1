@@ -1,12 +1,21 @@
 <template>
   <div class="sign-form">
-    <router-link :to="{ name: 'Builder' }" class="close close--white">
+    <router-link
+      :to="{ name: 'Builder' }"
+      class="close close--white"
+    >
       <span class="visually-hidden">Закрыть форму авторизации</span>
     </router-link>
     <div class="sign-form__title">
-      <h1 class="title title--small">Авторизуйтесь на сайте</h1>
+      <h1 class="title title--small">
+        Авторизуйтесь на сайте
+      </h1>
     </div>
-    <form action="" method="post" @submit.prevent="login">
+    <form
+      action=""
+      method="post"
+      @submit.prevent="login"
+    >
       <div class="sign-form__input">
         <AppInput
           v-model="email"
@@ -28,35 +37,38 @@
           placeholder="***********"
         />
       </div>
-      <AppButton type="submit">Авторизоваться</AppButton>
+      <AppButton type="submit">
+        Авторизоваться
+      </AppButton>
     </form>
   </div>
 </template>
+
 <script>
-import { validator } from "@/common/mixins";
-import { auth, isLoggedOut } from "@/middlewares";
+import { validator } from '@/common/mixins';
+import { auth, isLoggedOut } from '@/middlewares';
 
 export default {
-  name: "Login",
-  layout: "AppLayoutEmpty",
+  name: 'Login',
+  layout: 'AppLayoutEmpty',
   middlewares: { isLoggedOut, auth },
   mixins: [validator],
 
   data() {
     return {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       validations: {
         email: {
-          error: "",
-          rules: ["required", "email"],
+          error: '',
+          rules: ['required', 'email']
         },
 
         password: {
-          error: "",
-          rules: ["required"],
-        },
-      },
+          error: '',
+          rules: ['required']
+        }
+      }
     };
   },
 
@@ -67,7 +79,7 @@ export default {
 
     password() {
       this.$clearValidationErrors();
-    },
+    }
   },
 
   methods: {
@@ -80,15 +92,16 @@ export default {
       ) {
         return;
       }
-      await this.$store.dispatch("Auth/login", {
+      await this.$store.dispatch('Auth/login', {
         email: this.email,
-        password: this.password,
+        password: this.password
       });
-      await this.$router.push({ name: "Builder" });
-    },
-  },
+      await this.$router.push({ name: 'Builder' });
+    }
+  }
 };
 </script>
+
 <style lang="scss" scoped>
 @import "~@/assets/scss/layout/sign-form.scss";
 </style>

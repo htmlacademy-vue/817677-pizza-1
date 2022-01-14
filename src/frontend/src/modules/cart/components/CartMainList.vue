@@ -1,7 +1,14 @@
 <template>
   <ul class="cart-list sheet">
-    <li v-for="pizza in mainOrder" :key="pizza.id" class="cart-list__item">
-      <Product :pizza="pizza" classes="cart-list__product" />
+    <li
+      v-for="pizza in mainOrder"
+      :key="pizza.id"
+      class="cart-list__item"
+    >
+      <Product
+        :pizza="pizza"
+        classes="cart-list__product"
+      />
 
       <ItemCounter
         counter-classes="additional-list__counter"
@@ -41,38 +48,38 @@
 </template>
 
 <script>
-import Product from "@/common/components/Product";
-import { mapActions, mapMutations } from "vuex";
-import { UPDATE_PIZZA, SET_INGREDIENTS } from "@/store/mutation-types";
+import Product from '@/common/components/Product';
+import { mapActions, mapMutations } from 'vuex';
+import { UPDATE_PIZZA, SET_INGREDIENTS } from '@/store/mutation-types';
 
 export default {
-  name: "CartMainList",
+  name: 'CartMainList',
 
   components: {
-    Product,
+    Product
   },
 
   props: {
     mainOrder: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
 
   methods: {
-    ...mapActions("Cart", ["delete"]),
-    ...mapMutations("Builder", [UPDATE_PIZZA, SET_INGREDIENTS]),
+    ...mapActions('Cart', ['delete']),
+    ...mapMutations('Builder', [UPDATE_PIZZA, SET_INGREDIENTS]),
 
     changePizza(pizza) {
       this[UPDATE_PIZZA](pizza);
       this[SET_INGREDIENTS](pizza.ingredients);
-      this.$router.push({ name: "Builder" });
+      this.$router.push({ name: 'Builder' });
     },
 
     deletePizza(pizza) {
       this.delete(pizza.id);
-    },
-  },
+    }
+  }
 };
 </script>
 

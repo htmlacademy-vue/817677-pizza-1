@@ -1,15 +1,15 @@
-import { SET_ENTITY, DELETE_ENTITY } from "@/store/mutation-types";
-import { capitalize } from "@/common/helpers";
-import { cloneDeep } from "lodash";
+import { SET_ENTITY, DELETE_ENTITY } from '@/store/mutation-types';
+import { capitalize } from '@/common/helpers';
+import { cloneDeep } from 'lodash';
 
-const entity = "orders";
+const entity = 'orders';
 const module = capitalize(entity);
 const namespace = { entity, module };
 
 export default {
   namespaced: true,
   state: {
-    orders: [],
+    orders: []
   },
   getters: {},
   mutations: {},
@@ -21,7 +21,7 @@ export default {
         SET_ENTITY,
         {
           ...namespace,
-          value: orders,
+          value: orders
         },
         { root: true }
       );
@@ -30,27 +30,27 @@ export default {
       commit(
         SET_ENTITY,
         {
-          module: "Cart",
-          entity: "mainOrder",
-          value: cloneDeep(mainOrder),
+          module: 'Cart',
+          entity: 'mainOrder',
+          value: cloneDeep(mainOrder)
         },
         { root: true }
       );
       commit(
         SET_ENTITY,
         {
-          module: "Cart",
-          entity: "misc",
-          value: cloneDeep(misc),
+          module: 'Cart',
+          entity: 'misc',
+          value: cloneDeep(misc)
         },
         { root: true }
       );
       commit(
         SET_ENTITY,
         {
-          module: "Cart",
-          entity: "address",
-          value: cloneDeep(address),
+          module: 'Cart',
+          entity: 'address',
+          value: cloneDeep(address)
         },
         { root: true }
       );
@@ -61,10 +61,10 @@ export default {
         DELETE_ENTITY,
         {
           ...namespace,
-          id,
+          id
         },
         { root: true }
       );
-    },
-  },
+    }
+  }
 };

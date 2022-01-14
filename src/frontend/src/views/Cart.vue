@@ -8,10 +8,15 @@
       <main class="content cart">
         <div class="container">
           <div class="cart__title">
-            <h1 class="title title--big">Корзина</h1>
+            <h1 class="title title--big">
+              Корзина
+            </h1>
           </div>
 
-          <div v-if="!hasOrders" class="sheet cart__empty">
+          <div
+            v-if="!hasOrders"
+            class="sheet cart__empty"
+          >
             <p>В корзине нет ни одного товара</p>
           </div>
 
@@ -21,14 +26,20 @@
             @change-pizza-count="changePizzaCount"
           />
 
-          <div v-if="hasOrders" class="cart__additional">
+          <div
+            v-if="hasOrders"
+            class="cart__additional"
+          >
             <CartAdditionalList
               :misc="misc"
               @change-misc-count="changeMiscCount"
             />
           </div>
 
-          <div v-if="hasOrders" class="cart__form">
+          <div
+            v-if="hasOrders"
+            class="cart__form"
+          >
             <CartForm
               :address="address"
               :validations="validations"
@@ -38,7 +49,10 @@
         </div>
       </main>
 
-      <section v-if="hasOrders" class="footer">
+      <section
+        v-if="hasOrders"
+        class="footer"
+      >
         <div class="footer__more">
           <router-link
             :to="{ name: 'Builder' }"
@@ -55,66 +69,73 @@
         </div>
 
         <div class="footer__submit">
-          <AppButton type="submit">Оформить заказ</AppButton>
+          <AppButton type="submit">
+            Оформить заказ
+          </AppButton>
         </div>
       </section>
     </form>
 
-    <CartThanksOrder v-show="showPopup" :is-authenticated="isAuthenticated" />
+    <CartThanksOrder
+      v-show="showPopup"
+      :is-authenticated="isAuthenticated"
+    />
   </div>
 </template>
+
 <script>
-import { validator } from "@/common/mixins";
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import CartMainList from "@/modules/cart/components/CartMainList";
-import CartAdditionalList from "@/modules/cart/components/CartAdditionalList";
-import CartForm from "@/modules/cart/components/CartForm";
-import CartThanksOrder from "@/modules/cart/components/CartThanksOrder";
+import { validator } from '@/common/mixins';
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+import CartMainList from '@/modules/cart/components/CartMainList';
+import CartAdditionalList from '@/modules/cart/components/CartAdditionalList';
+import CartForm from '@/modules/cart/components/CartForm';
+import CartThanksOrder from '@/modules/cart/components/CartThanksOrder';
 import {
   UPDATE_MISC_COUNT,
   SET_ADDRESS,
-  RESET_STATE,
-} from "@/store/mutation-types";
+  RESET_STATE
+} from '@/store/mutation-types';
 
 export default {
-  name: "Cart",
-  layout: "AppLayoutDefault",
-  mixins: [validator],
+  name: 'Cart',
+  layout: 'AppLayoutDefault',
 
   components: {
     CartMainList,
     CartAdditionalList,
     CartForm,
-    CartThanksOrder,
+    CartThanksOrder
   },
+
+  mixins: [validator],
 
   data() {
     return {
       showPopup: false,
       validations: {
         street: {
-          error: "",
-          rules: ["required"],
+          error: '',
+          rules: ['required']
         },
 
         building: {
-          error: "",
-          rules: ["required"],
+          error: '',
+          rules: ['required']
         },
 
         flat: {
-          error: "",
-          rules: ["required"],
-        },
-      },
+          error: '',
+          rules: ['required']
+        }
+      }
     };
   },
 
   computed: {
-    ...mapState("Cart", ["mainOrder", "misc", "address"]),
-    ...mapState("Profile", ["addresses"]),
-    ...mapGetters("Cart", ["fullPrice"]),
-    ...mapState(["Auth"]),
+    ...mapState('Cart', ['mainOrder', 'misc', 'address']),
+    ...mapState('Profile', ['addresses']),
+    ...mapGetters('Cart', ['fullPrice']),
+    ...mapState(['Auth']),
 
     isAuthenticated() {
       return this.Auth.isAuthenticated;
@@ -122,26 +143,26 @@ export default {
 
     hasOrders() {
       return this.mainOrder.length > 0;
-    },
+    }
   },
 
   watch: {
-    ["address.street"]() {
+    ['address.street']() {
       this.$clearValidationErrors();
     },
 
-    ["address.building"]() {
+    ['address.building']() {
       this.$clearValidationErrors();
     },
 
-    ["address.flat"]() {
+    ['address.flat']() {
       this.$clearValidationErrors();
-    },
+    }
   },
 
   methods: {
-    ...mapActions("Cart", ["post", "put", "delete"]),
-    ...mapMutations("Cart", [UPDATE_MISC_COUNT, SET_ADDRESS, RESET_STATE]),
+    ...mapActions('Cart', ['post', 'put', 'delete']),
+    ...mapMutations('Cart', [UPDATE_MISC_COUNT, SET_ADDRESS, RESET_STATE]),
 
     changePizzaCount(pizza) {
       if (pizza.count === 0) {
@@ -161,12 +182,12 @@ export default {
 
     placeAnOrder() {
       if (
-        this.address?.test === "new" &&
+        this.address?.test === 'new' &&
         !this.$validateFields(
           {
             street: this.address.street,
             building: this.address.building,
-            flat: this.address.flat,
+            flat: this.address.flat
           },
           this.validations
         )
@@ -178,10 +199,11 @@ export default {
         this.showPopup = true;
         this[RESET_STATE]();
       });
-    },
-  },
+    }
+  }
 };
 </script>
+
 <style lang="scss" scoped>
 @import "~@/assets/scss/layout/layout-form.scss";
 @import "~@/assets/scss/blocks/cart.scss";

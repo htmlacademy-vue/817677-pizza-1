@@ -1,8 +1,13 @@
 <template>
   <main class="content">
-    <form action="#" method="post">
+    <form
+      action="#"
+      method="post"
+    >
       <div class="content__wrapper">
-        <h1 class="title title--big">Конструктор пиццы</h1>
+        <h1 class="title title--big">
+          Конструктор пиццы
+        </h1>
 
         <template v-if="Object.values(builder).every((item) => item.length)">
           <div class="content__dough">
@@ -61,43 +66,44 @@
     </form>
   </main>
 </template>
-<script>
-import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
-import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
-import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
-import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
-import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { UPDATE_PIZZA, RESET_STATE } from "@/store/mutation-types";
+<script>
+import BuilderDoughSelector from '@/modules/builder/components/BuilderDoughSelector';
+import BuilderSizeSelector from '@/modules/builder/components/BuilderSizeSelector';
+import BuilderIngredientsSelector from '@/modules/builder/components/BuilderIngredientsSelector';
+import BuilderPizzaView from '@/modules/builder/components/BuilderPizzaView';
+import BuilderPriceCounter from '@/modules/builder/components/BuilderPriceCounter';
+
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import { UPDATE_PIZZA, RESET_STATE } from '@/store/mutation-types';
 
 export default {
-  name: "Builder",
-  layout: "AppLayoutDefault",
+  name: 'Builder',
+  layout: 'AppLayoutDefault',
 
   components: {
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderPizzaView,
-    BuilderPriceCounter,
+    BuilderPriceCounter
   },
 
   computed: {
-    ...mapState("Builder", ["builder", "pizza", "ingredients"]),
-    ...mapGetters("Builder", ["pizzaPrice", "ingredientsPrice"]),
+    ...mapState('Builder', ['builder', 'pizza', 'ingredients']),
+    ...mapGetters('Builder', ['pizzaPrice', 'ingredientsPrice']),
 
     disabledButton() {
       return this.ingredientsPrice === 0 || !this.pizza.name;
-    },
+    }
   },
 
   methods: {
-    ...mapActions("Cart", {
-      updatePizza: "put",
+    ...mapActions('Cart', {
+      updatePizza: 'put'
     }),
-    ...mapActions("Builder", ["post", "put"]),
-    ...mapMutations("Builder", [UPDATE_PIZZA, RESET_STATE]),
+    ...mapActions('Builder', ['post', 'put']),
+    ...mapMutations('Builder', [UPDATE_PIZZA, RESET_STATE]),
 
     changeIngredientCount(ingredient) {
       this.put(ingredient);
@@ -111,17 +117,18 @@ export default {
       if (this.pizza.id) {
         this.updatePizza({
           ...this.pizza,
-          price: this.pizzaPrice,
+          price: this.pizzaPrice
         });
       } else {
         this.post({
           ...this.pizza,
-          price: this.pizzaPrice,
+          price: this.pizzaPrice
         });
       }
       this[RESET_STATE]();
-    },
-  },
+    }
+  }
 };
 </script>
+
 <style lang="scss" scoped></style>

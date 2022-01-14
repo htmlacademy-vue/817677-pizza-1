@@ -11,25 +11,25 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import AppLayoutHeader from "@/layouts/AppLayoutHeader";
-import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
+import { mapState } from 'vuex';
+import AppLayoutHeader from '@/layouts/AppLayoutHeader';
+import AppLayoutSidebar from '@/layouts/AppLayoutSidebar';
 
 export default {
-  name: "AppLayoutMain",
+  name: 'AppLayoutMain',
 
   components: {
     AppLayoutHeader,
-    AppLayoutSidebar,
+    AppLayoutSidebar
   },
 
   computed: {
-    ...mapState(["Auth"]),
+    ...mapState(['Auth']),
 
     isAuthenticated() {
       return this.Auth.isAuthenticated;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped></style>
